@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/msn0/phantomjs2-playground#readme",
   "dependencies": {
+    "ora": "^1.2.0",
     "phantom": "^4.0.3"
   }
 }

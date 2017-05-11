@@ -1,15 +1,18 @@
 const phantom = require('phantom');
+const ora = require('ora');
 
 function analyze(data) {
-    console.log('\n');
     console.log(data);
 }
 
 async function start(num) {
 
   const data = [];
+  const spinner = ora('Starting performance tests').start();
 
-  for (var i = 0; i < num; i++) {
+  for (var i = 1; i <= num; i++) {
+    spinner.text = `Testing timings ${i}/${num}`;
+
     const instance = await phantom.create();
     const page = await instance.createPage();
     await page.open(`http://allegro.pl`);
@@ -27,11 +30,12 @@ async function start(num) {
       domComplete: domComplete - connectStart
     });
 
-    process.stdout.write('.');
+    spinner.stop();
+
     await instance.exit();
   }
 
   analyze(data);
 }
 
-start(5);
+start(2);
