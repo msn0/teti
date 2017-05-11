@@ -3,13 +3,19 @@ const ora = require('ora');
 const median = require('stats-median');
 
 function analyze(data) {
-    const domInteractiveList = data.map(timing => timing.domInteractive).sort();
-    const domCompleteList = data.map(timing => timing.domComplete).sort();
+    const domInteractiveList = data
+      .map(timing => timing.domInteractive)
+      .filter(timing => timing > 0)
+      .sort();
+    const domCompleteList = data
+      .map(timing => timing.domComplete)
+      .filter(timing => timing > 0)
+      .sort();
 
     console.log(data);
 
-    console.log('domInteractive:\t', median.calc(domInteractiveList));
-    console.log('domComplete: \t', median.calc(domCompleteList));
+    console.log('domInteractive:\t', (median.calc(domInteractiveList) / 1000).toFixed(2));
+    console.log('domComplete: \t', (median.calc(domCompleteList) / 1000).toFixed(2));
 }
 
 async function start(num) {
