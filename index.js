@@ -17,25 +17,20 @@ async function start(num) {
     const page = await instance.createPage();
     await page.open(`http://allegro.pl`);
 
-    const timing = await page.evaluate(function () {
+    const { connectStart, domInteractive, domComplete } = await page.evaluate(function () {
         return window.performance.timing;
     });
-
-    const connectStart = timing.connectStart;
-    const domInteractive = timing.domInteractive;
-    const domComplete = timing.domComplete;
 
     data.push({
       domInteractive: domInteractive - connectStart,
       domComplete: domComplete - connectStart
     });
 
-    spinner.stop();
-
     await instance.exit();
   }
 
+  spinner.stop();
   analyze(data);
 }
 
-start(2);
+start(5);
