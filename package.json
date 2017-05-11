@@ -19,6 +19,8 @@
   "homepage": "https://github.com/msn0/phantomjs2-playground#readme",
   "dependencies": {
     "ora": "^1.2.0",
-    "phantom": "^4.0.3"
+    "phantom": "^4.0.3",
+    "stats-median": "^1.0.0",
+    "stats-percentile": "^1.2.0"
   }
 }

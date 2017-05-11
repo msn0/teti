@@ -1,8 +1,15 @@
 const phantom = require('phantom');
 const ora = require('ora');
+const median = require('stats-median');
 
 function analyze(data) {
+    const domInteractiveList = data.map(timing => timing.domInteractive).sort();
+    const domCompleteList = data.map(timing => timing.domComplete).sort();
+
     console.log(data);
+
+    console.log('domInteractive:\t', median.calc(domInteractiveList));
+    console.log('domComplete: \t', median.calc(domCompleteList));
 }
 
 async function start(num) {
@@ -33,4 +40,4 @@ async function start(num) {
   analyze(data);
 }
 
-start(5);
+start(30);
