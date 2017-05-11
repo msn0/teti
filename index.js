@@ -1,23 +1,37 @@
 const phantom = require('phantom');
 
-async function start() {
-  const instance = await phantom.create();
-  const page = await instance.createPage();
-
-  await page.open(`http://allegro.pl`);
-
-  const timing = await page.evaluate(function() {
-      return window.performance.timing;
-  });
-
-  const connectStart = timing.connectStart;
-  const domInteractive = timing.domInteractive;
-  const domComplete = timing.domComplete;
-
-  console.log('domInteractive:\t', domInteractive - connectStart);
-  console.log('domComplete: \t', domComplete - connectStart);
-
-  await instance.exit();
+function analyze(data) {
+    console.log('\n');
+    console.log(data);
 }
 
-start();
+async function start(num) {
+
+  const data = [];
+
+  for (var i = 0; i < num; i++) {
+    const instance = await phantom.create();
+    const page = await instance.createPage();
+    await page.open(`http://allegro.pl`);
+
+    const timing = await page.evaluate(function () {
+        return window.performance.timing;
+    });
+
+    const connectStart = timing.connectStart;
+    const domInteractive = timing.domInteractive;
+    const domComplete = timing.domComplete;
+
+    data.push({
+      domInteractive: domInteractive - connectStart,
+      domComplete: domComplete - connectStart
+    });
+
+    process.stdout.write('.');
+    await instance.exit();
+  }
+
+  analyze(data);
+}
+
+start(5);
