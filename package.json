@@ -1,0 +1,23 @@
+{
+  "name": "phantomjs2-playground",
+  "version": "1.0.0",
+  "description": "",
+  "main": "p.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/msn0/phantomjs2-playground.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/msn0/phantomjs2-playground/issues"
+  },
+  "homepage": "https://github.com/msn0/phantomjs2-playground#readme",
+  "dependencies": {
+    "phantom": "^4.0.3"
+  }
+}
