@@ -23,32 +23,32 @@ function analyze(data) {
 
 async function start(url, num) {
 
-  const data = [];
-  const spinner = ora('Starting performance tests').start();
+    const data = [];
+    const spinner = ora('Starting performance tests').start();
 
-  for (var i = 1; i <= num; i++) {
-    spinner.text = `Testing timings ${i}/${num}`;
+    for (var i = 1; i <= num; i++) {
+        spinner.text = `Testing timings ${i}/${num}`;
 
-    const instance = await phantom.create();
-    const page = await instance.createPage();
-    await page.open(url);
+        const instance = await phantom.create();
+        const page = await instance.createPage();
+        await page.open(url);
 
-    const { connectStart, domInteractive, domComplete } = await page.evaluate(function () {
-        return window.performance.timing;
-    });
+        const { connectStart, domInteractive, domComplete } = await page.evaluate(function () {
+            return window.performance.timing;
+        });
 
-    data.push({
-      domInteractive: domInteractive - connectStart,
-      domComplete: domComplete - connectStart
-    });
+        data.push({
+            domInteractive: domInteractive - connectStart,
+            domComplete: domComplete - connectStart
+        });
 
-    await instance.exit();
-  }
+        await instance.exit();
+    }
 
-  spinner.stop();
-  analyze(data);
+    spinner.stop();
+    analyze(data);
 }
 
 module.exports = function (url, num) {
-  start(url, num);
+    start(url, num);
 };
