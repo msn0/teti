@@ -2,15 +2,18 @@ const phantom = require('phantom');
 const ora = require('ora');
 const median = require('stats-median');
 
+function getTimings(data) {
+    return function (name) {
+        return data
+          .map(timing => timing[name])
+          .filter(timing => timing > 0)
+          .sort();
+    };
+}
+
 function analyze(data) {
-    const domInteractiveList = data
-      .map(timing => timing.domInteractive)
-      .filter(timing => timing > 0)
-      .sort();
-    const domCompleteList = data
-      .map(timing => timing.domComplete)
-      .filter(timing => timing > 0)
-      .sort();
+    const domInteractiveList = getTimings(data)('domInteractive');
+    const domCompleteList = getTimings(data)('domComplete');
 
     console.log(data);
 
@@ -18,17 +21,17 @@ function analyze(data) {
     console.log('domComplete: \t', (median.calc(domCompleteList) / 1000).toFixed(2));
 }
 
-async function start(num) {
+async function start(url, flags) {
 
   const data = [];
   const spinner = ora('Starting performance tests').start();
 
-  for (var i = 1; i <= num; i++) {
-    spinner.text = `Testing timings ${i}/${num}`;
+  for (var i = 1; i <= flags.n; i++) {
+    spinner.text = `Testing timings ${i}/${flags.n}`;
 
     const instance = await phantom.create();
     const page = await instance.createPage();
-    await page.open(`http://allegro.pl`);
+    await page.open(url);
 
     const { connectStart, domInteractive, domComplete } = await page.evaluate(function () {
         return window.performance.timing;
@@ -46,4 +49,6 @@ async function start(num) {
   analyze(data);
 }
 
-start(30);
+module.exports = function (url, flags) {
+  start(url, flags);
+};
