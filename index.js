@@ -21,13 +21,13 @@ function analyze(data) {
     console.log('domComplete: \t', (median.calc(domCompleteList) / 1000).toFixed(2));
 }
 
-async function start(url, flags) {
+async function start(url, num) {
 
   const data = [];
   const spinner = ora('Starting performance tests').start();
 
-  for (var i = 1; i <= flags.n; i++) {
-    spinner.text = `Testing timings ${i}/${flags.n}`;
+  for (var i = 1; i <= num; i++) {
+    spinner.text = `Testing timings ${i}/${num}`;
 
     const instance = await phantom.create();
     const page = await instance.createPage();
@@ -49,6 +49,6 @@ async function start(url, flags) {
   analyze(data);
 }
 
-module.exports = function (url, flags) {
-  start(url, flags);
+module.exports = function (url, num) {
+  start(url, num);
 };

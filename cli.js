@@ -13,8 +13,13 @@ const cli = meow(`
 	  -n  number of tests to run (10 is default)
 
 	Examples
-	  $ teti https://google.com -n 96
+	  $ teti google.com -n 96
 `
 );
 
-teti(cli.input[0], cli.flags);
+const num = cli.flags.n || 10;
+const url = cli.input[0].startsWith('http')
+	? cli.input[0]
+	: 'http://' + cli.input[0];
+
+teti(url, num);
