@@ -17,6 +17,11 @@ const cli = meow(`
 `
 );
 
+if(!cli.input[0]) {
+	cli.showHelp();
+	process.exit(1);
+}
+
 const num = cli.flags.n || 10;
 const url = cli.input[0].startsWith('http')
 	? cli.input[0]
