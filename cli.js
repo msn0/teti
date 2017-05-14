@@ -4,6 +4,7 @@
 
 const meow = require('meow');
 const teti = require('.');
+const ora = require('ora');
 
 const cli = meow(`
     Usage
@@ -29,4 +30,19 @@ const url = cli.input[0].startsWith('http')
     : 'http://' + cli.input[0];
 const verbose = cli.flags.verbose;
 
-teti({ url, num, verbose });
+const spinner = ora('Starting performance tests').start();
+
+function notify (current) {
+    spinner.text = `Testing timings ${current}/${num}`;
+}
+
+teti({ url, num, notify }).then(output => {
+    spinner.stop();
+
+    if (verbose) {
+        console.log(output.raw);
+    }
+
+    console.log('domInteractive:\t', output.domInteractive);
+    console.log('domComplete: \t', output.domComplete);
+});

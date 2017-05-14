@@ -1,8 +1,7 @@
 const phantom = require('phantom');
-const ora = require('ora');
 const median = require('stats-median');
 
-async function start({ url, num, verbose }) {
+async function start({ url, num, notify }) {
 
     function getTimings(data) {
         return function (name) {
@@ -17,19 +16,17 @@ async function start({ url, num, verbose }) {
         const domInteractiveList = getTimings(data)('domInteractive');
         const domCompleteList = getTimings(data)('domComplete');
 
-        if (verbose) {
-            console.log(data);
-        }
-
-        console.log('domInteractive:\t', (median.calc(domInteractiveList) / 1000).toFixed(2));
-        console.log('domComplete: \t', (median.calc(domCompleteList) / 1000).toFixed(2));
+        return {
+            raw: data,
+            domInteractive: (median.calc(domInteractiveList) / 1000).toFixed(2),
+            domComplete: (median.calc(domCompleteList) / 1000).toFixed(2)
+        };
     }
 
     const data = [];
-    const spinner = ora('Starting performance tests').start();
 
     for (var i = 1; i <= num; i++) {
-        spinner.text = `Testing timings ${i}/${num}`;
+        notify(i);
 
         const instance = await phantom.create();
         const page = await instance.createPage();
@@ -47,10 +44,9 @@ async function start({ url, num, verbose }) {
         await instance.exit();
     }
 
-    spinner.stop();
-    analyze(data);
+    return analyze(data);
 }
 
 module.exports = function (params) {
-    start(params);
+    return start(params);
 };
