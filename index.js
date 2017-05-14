@@ -2,26 +2,28 @@ const phantom = require('phantom');
 const ora = require('ora');
 const median = require('stats-median');
 
-function getTimings(data) {
-    return function (name) {
-        return data
-          .map(timing => timing[name])
-          .filter(timing => timing > 0)
-          .sort();
-    };
-}
+async function start({ url, num, verbose }) {
 
-function analyze(data) {
-    const domInteractiveList = getTimings(data)('domInteractive');
-    const domCompleteList = getTimings(data)('domComplete');
+    function getTimings(data) {
+        return function (name) {
+            return data
+              .map(timing => timing[name])
+              .filter(timing => timing > 0)
+              .sort();
+        };
+    }
 
-    console.log(data);
+    function analyze(data) {
+        const domInteractiveList = getTimings(data)('domInteractive');
+        const domCompleteList = getTimings(data)('domComplete');
 
-    console.log('domInteractive:\t', (median.calc(domInteractiveList) / 1000).toFixed(2));
-    console.log('domComplete: \t', (median.calc(domCompleteList) / 1000).toFixed(2));
-}
+        if (verbose) {
+            console.log(data);
+        }
 
-async function start({ url, num }) {
+        console.log('domInteractive:\t', (median.calc(domInteractiveList) / 1000).toFixed(2));
+        console.log('domComplete: \t', (median.calc(domCompleteList) / 1000).toFixed(2));
+    }
 
     const data = [];
     const spinner = ora('Starting performance tests').start();
@@ -49,6 +51,6 @@ async function start({ url, num }) {
     analyze(data);
 }
 
-module.exports = function ({ url, num }) {
-    start({ url, num });
+module.exports = function (params) {
+    start(params);
 };
