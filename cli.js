@@ -12,7 +12,7 @@ const cli = meow(`
 
   Options
     -n          number of tests to run (10 is default)
-    --verbose   detailed output
+    --verbose   output all data
 
   Examples
     $ teti google.com -n 96

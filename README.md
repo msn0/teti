@@ -15,7 +15,8 @@ Usage
   $ teti <url>
 
 Options
-  -n  number of tests to run (10 is default)
+  -n          number of tests to run (10 is default)
+  --verbose   output all data
 ```
 
 ## Examples
