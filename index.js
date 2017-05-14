@@ -18,8 +18,8 @@ async function start({ url, num, notify }) {
 
         return {
             raw: data,
-            domInteractive: (median.calc(domInteractiveList) / 1000).toFixed(2),
-            domComplete: (median.calc(domCompleteList) / 1000).toFixed(2)
+            domInteractive: (median.calc(domInteractiveList) / 1000).toFixed(2) * 1,
+            domComplete: (median.calc(domCompleteList) / 1000).toFixed(2) * 1
         };
     }
 
