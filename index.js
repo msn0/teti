@@ -21,7 +21,7 @@ function analyze(data) {
     console.log('domComplete: \t', (median.calc(domCompleteList) / 1000).toFixed(2));
 }
 
-async function start(url, num) {
+async function start({ url, num }) {
 
     const data = [];
     const spinner = ora('Starting performance tests').start();
@@ -49,6 +49,6 @@ async function start(url, num) {
     analyze(data);
 }
 
-module.exports = function (url, num) {
-    start(url, num);
+module.exports = function ({ url, num }) {
+    start({ url, num });
 };

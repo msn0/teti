@@ -27,4 +27,4 @@ const url = cli.input[0].startsWith('http')
     ? cli.input[0]
     : 'http://' + cli.input[0];
 
-teti(url, num);
+teti({ url, num });
