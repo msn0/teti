@@ -10,7 +10,9 @@
     "type": "git",
     "url": "git+https://github.com/msn0/teti.git"
   },
-  "keywords": ["performance"],
+  "keywords": [
+    "performance"
+  ],
   "author": "Michał Jezierski <ambinanitelo@gmail.com>",
   "license": "MIT",
   "bugs": {
