@@ -8,15 +8,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/msn0/phantomjs2-playground.git"
+    "url": "git+https://github.com/msn0/teti.git"
   },
   "keywords": ["performance"],
   "author": "Michał Jezierski <ambinanitelo@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/msn0/phantomjs2-playground/issues"
+    "url": "https://github.com/msn0/teti/issues"
   },
-  "homepage": "https://github.com/msn0/phantomjs2-playground#readme",
+  "homepage": "https://github.com/msn0/teti#readme",
   "dependencies": {
     "meow": "^3.7.0",
     "ora": "^1.2.0",
