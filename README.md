@@ -2,6 +2,8 @@
 
 > CLI for testing DOM timings
 
+![](https://raw.githubusercontent.com/msn0/teti/master/screencast.gif)
+
 ```
 npm i -g teti
 ```
