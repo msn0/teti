@@ -7,7 +7,7 @@ const teti = require('.');
 const ora = require('ora');
 
 const cli = meow(`
-    Usage
+  Usage
     $ teti <url>
 
   Options
@@ -16,8 +16,7 @@ const cli = meow(`
 
   Examples
     $ teti google.com -n 96
-`
-);
+`);
 
 if (!cli.input[0]) {
     cli.showHelp();
