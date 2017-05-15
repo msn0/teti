@@ -3,8 +3,11 @@
 'use strict';
 
 const meow = require('meow');
-const teti = require('.');
+const teti = require('./');
 const ora = require('ora');
+const Table = require('cli-table');
+
+console.log(teti);
 
 const cli = meow(`
   Usage
@@ -42,6 +45,13 @@ teti({ url, num, notify }).then(output => {
         console.log(output.raw);
     }
 
-    console.log('domInteractive:\t', output.domInteractive);
-    console.log('domComplete: \t', output.domComplete);
+    const table = new Table({
+        head: ['Timing', 'median'],
+        colWidths: [20, 20]
+    });
+
+    table.push(['domInteractive', output.domInteractive]);
+    table.push(['domComplete', output.domComplete]);
+
+    console.log(table.toString());
 });
