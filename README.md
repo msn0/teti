@@ -1,6 +1,6 @@
 # teti
 
-> Simple CLI for testing DOM timings
+> CLI for testing DOM timings
 
 ```
 npm i -g teti
