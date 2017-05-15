@@ -1,5 +1,6 @@
 const phantom = require('phantom');
 const median = require('stats-median');
+const percentile = require('stats-percentile');
 
 function twoDigits(value) {
     return (value / 1000).toFixed(2) * 1;
@@ -23,10 +24,12 @@ async function start({ url, num, notify }) {
         return {
             raw: data,
             domInteractive: {
-                median: twoDigits(median.calc(domInteractiveList))
+                median: twoDigits(median.calc(domInteractiveList)),
+                p95: twoDigits(percentile.calc(domInteractiveList, 95))
             },
             domComplete: {
-                median: twoDigits(median.calc(domCompleteList))
+                median: twoDigits(median.calc(domCompleteList)),
+                p95: twoDigits(percentile.calc(domCompleteList, 95))
             }
         };
     }
