@@ -44,12 +44,12 @@ teti({ url, num, notify }).then(output => {
     }
 
     const table = new Table({
-        head: ['Timing', 'median', 'p95'],
-        colWidths: [20, 10, 10]
+        head: ['Timing', 'median', 'mean', 'p95'],
+        colWidths: [20, 10, 10, 10]
     });
 
-    table.push(['domInteractive', output.domInteractive.median, output.domInteractive.p95]);
-    table.push(['domComplete', output.domComplete.median, output.domInteractive.p95]);
+    table.push(['domInteractive', output.domInteractive.median, output.domInteractive.mean, output.domInteractive.p95]);
+    table.push(['domComplete', output.domComplete.median, output.domComplete.mean, output.domInteractive.p95]);
 
     console.log(table.toString());
 });
