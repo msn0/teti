@@ -33,7 +33,7 @@ const verbose = cli.flags.verbose;
 const spinner = ora('Starting performance tests').start();
 
 function notify (current) {
-    spinner.text = `Testing timings ${current}/${num}`;
+    spinner.text = `Collecting DOM timings ${current}/${num}`;
 }
 
 teti({ url, num, notify }).then(output => {
@@ -62,6 +62,8 @@ teti({ url, num, notify }).then(output => {
         output.domComplete.p95,
         output.domComplete.variance]
     );
+
+    console.log(`\nResults for ${url} based on ${num} requests:\n`);
 
     console.log(table.toString());
 });
