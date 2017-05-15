@@ -33,6 +33,9 @@
     "stats-variance": "^1.0.0"
   },
   "devDependencies": {
-    "eslint-config-helmut": "^1.2.0"
+    "ava": "^0.19.1",
+    "eslint-config-helmut": "^1.2.0",
+    "nock": "^9.0.13",
+    "sinon": "^2.2.0"
   }
 }

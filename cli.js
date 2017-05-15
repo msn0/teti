@@ -64,6 +64,5 @@ teti({ url, num, notify }).then(output => {
     );
 
     console.log(`\nResults for ${url} based on ${num} requests:\n`);
-
     console.log(table.toString());
 });
