@@ -2,7 +2,10 @@
   "name": "teti",
   "version": "1.0.0",
   "description": "Test DOM performance timings",
-  "main": "cli.js",
+  "main": "index.js",
+  "bin": {
+    "teti": "./cli.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -20,6 +23,7 @@
   },
   "homepage": "https://github.com/msn0/teti#readme",
   "dependencies": {
+    "cli-table": "^0.3.1",
     "meow": "^3.7.0",
     "ora": "^1.2.0",
     "phantom": "^4.0.3",
