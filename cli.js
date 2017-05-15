@@ -7,8 +7,6 @@ const teti = require('./');
 const ora = require('ora');
 const Table = require('cli-table');
 
-console.log(teti);
-
 const cli = meow(`
   Usage
     $ teti <url>
@@ -47,11 +45,11 @@ teti({ url, num, notify }).then(output => {
 
     const table = new Table({
         head: ['Timing', 'median'],
-        colWidths: [20, 20]
+        colWidths: [20, 10]
     });
 
-    table.push(['domInteractive', output.domInteractive]);
-    table.push(['domComplete', output.domComplete]);
+    table.push(['domInteractive', output.domInteractive.median]);
+    table.push(['domComplete', output.domComplete.median]);
 
     console.log(table.toString());
 });

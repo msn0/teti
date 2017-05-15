@@ -1,6 +1,10 @@
 const phantom = require('phantom');
 const median = require('stats-median');
 
+function twoDigits(value) {
+    return (value / 1000).toFixed(2) * 1;
+}
+
 async function start({ url, num, notify }) {
 
     function getTimings(data) {
@@ -18,8 +22,12 @@ async function start({ url, num, notify }) {
 
         return {
             raw: data,
-            domInteractive: (median.calc(domInteractiveList) / 1000).toFixed(2) * 1,
-            domComplete: (median.calc(domCompleteList) / 1000).toFixed(2) * 1
+            domInteractive: {
+                median: twoDigits(median.calc(domInteractiveList))
+            },
+            domComplete: {
+                median: twoDigits(median.calc(domCompleteList))
+            }
         };
     }
 
