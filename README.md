@@ -1,8 +1,7 @@
 <h1 align="center">
-    teti
+    <img width=244 height=142 src="https://raw.githubusercontent.com/msn0/teti/master/teti.png" alt="teti" />
     <br>
-    <br>
-	<img src="https://raw.githubusercontent.com/msn0/teti/master/screencast.gif" alt="teti" />
+	<img src="https://raw.githubusercontent.com/msn0/teti/master/screencast.gif" alt="teti screencast" />
 	<br>
 </h1>
 
