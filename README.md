@@ -4,8 +4,6 @@
     <br>
 	<img src="https://raw.githubusercontent.com/msn0/teti/master/screencast.gif" alt="teti" />
 	<br>
-	<br>
-	<br>
 </h1>
 
 > CLI for testing DOM timings
