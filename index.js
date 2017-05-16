@@ -8,16 +8,16 @@ function twoDigits(value) {
     return (value / 1000).toFixed(2) * 1;
 }
 
-async function start({ url, num, notify }) {
+function getTimings(data) {
+    return function (name) {
+        return data
+          .map(timing => timing[name])
+          .filter(timing => timing > 0)
+          .sort();
+    };
+}
 
-    function getTimings(data) {
-        return function (name) {
-            return data
-              .map(timing => timing[name])
-              .filter(timing => timing > 0)
-              .sort();
-        };
-    }
+async function start({ url, num, notify }) {
 
     function analyze(data) {
         const domInteractiveList = getTimings(data)('domInteractive');
