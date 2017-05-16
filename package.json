@@ -7,7 +7,7 @@
     "teti": "./cli.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "ava --verbose"
   },
   "repository": {
     "type": "git",
@@ -34,8 +34,6 @@
   },
   "devDependencies": {
     "ava": "^0.19.1",
-    "eslint-config-helmut": "^1.2.0",
-    "nock": "^9.0.13",
-    "sinon": "^2.2.0"
+    "eslint-config-helmut": "^1.2.0"
   }
 }
