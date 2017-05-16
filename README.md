@@ -1,8 +1,14 @@
-# teti
+<h1 align="center">
+    teti
+    <br>
+    <br>
+	<img width="400" src="https://raw.githubusercontent.com/msn0/teti/master/screencast.gif" alt="teti" />
+	<br>
+	<br>
+	<br>
+</h1>
 
 > CLI for testing DOM timings
-
-![](https://raw.githubusercontent.com/msn0/teti/master/screencast.gif)
 
 ```
 npm i -g teti
