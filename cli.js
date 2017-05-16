@@ -38,10 +38,13 @@ function verboseLog(message) {
     }
 }
 
-function notify(current, timing) {
-    spinner.text = `Collecting DOM timings ${current}/${num}`;
-
-    verboseLog(timing);
+function notify({ current, timing }) {
+    if (current) {
+        spinner.text = `Collecting DOM timings ${current}/${num} `;
+    }
+    if (timing) {
+        verboseLog(timing);
+    }
 }
 
 teti({ url, num, notify }).then(output => {
@@ -67,7 +70,6 @@ teti({ url, num, notify }).then(output => {
         output.domComplete.variance]
     );
 
-    verboseLog(output.raw);
     console.log(`\nResults for ${url} based on ${num} requests:\n`);
     console.log(table.toString());
 });
