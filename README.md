@@ -2,7 +2,7 @@
     teti
     <br>
     <br>
-	<img width="400" src="https://raw.githubusercontent.com/msn0/teti/master/screencast.gif" alt="teti" />
+	<img src="https://raw.githubusercontent.com/msn0/teti/master/screencast.gif" alt="teti" />
 	<br>
 	<br>
 	<br>
