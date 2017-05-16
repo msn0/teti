@@ -1,4 +1,3 @@
-const phantom = require('phantom');
 const median = require('stats-median');
 const percentile = require('stats-percentile');
 const mean = require('stats-mean');
@@ -17,42 +16,38 @@ function getTimings(data) {
     };
 }
 
-async function start({ url, num, notify }) {
+function analyze(data) {
+    const domInteractiveList = getTimings(data)('domInteractive');
+    const domCompleteList = getTimings(data)('domComplete');
 
-    function analyze(data) {
-        const domInteractiveList = getTimings(data)('domInteractive');
-        const domCompleteList = getTimings(data)('domComplete');
+    return {
+        raw: data,
+        domInteractive: {
+            median: twoDigits(median.calc(domInteractiveList)),
+            mean: twoDigits(mean.calc(domInteractiveList)),
+            p95: twoDigits(percentile.calc(domInteractiveList, 95)),
+            variance: twoDigits(variance.calc(domInteractiveList))
+        },
+        domComplete: {
+            median: twoDigits(median.calc(domCompleteList)),
+            mean: twoDigits(mean.calc(domCompleteList)),
+            p95: twoDigits(percentile.calc(domCompleteList, 95)),
+            variance: twoDigits(variance.calc(domCompleteList))
+        }
+    };
+}
 
-        return {
-            raw: data,
-            domInteractive: {
-                median: twoDigits(median.calc(domInteractiveList)),
-                mean: twoDigits(mean.calc(domInteractiveList)),
-                p95: twoDigits(percentile.calc(domInteractiveList, 95)),
-                variance: twoDigits(variance.calc(domInteractiveList))
-            },
-            domComplete: {
-                median: twoDigits(median.calc(domCompleteList)),
-                mean: twoDigits(mean.calc(domCompleteList)),
-                p95: twoDigits(percentile.calc(domCompleteList, 95)),
-                variance: twoDigits(variance.calc(domCompleteList))
-            }
-        };
-    }
+async function start({ url, num, notify, runner = require('./phantom-runner') }) {
 
     const data = [];
 
     for (let current = 1; current <= num; current++) {
         notify({ current });
-        const instance = await phantom.create();
-        const page = await instance.createPage();
-        await page.open(url);
 
-        const { connectStart, domInteractive, domComplete } = await page.evaluate(function () {
-            return window.performance.timing;
-        });
+        const { connectStart, domInteractive, domComplete } = await runner(url);
 
         if (domInteractive === 0 || domComplete === 0) {
+            console.log('Incorrect response, I\'m trying once again.');
             current--;
             continue;
         }
@@ -63,9 +58,7 @@ async function start({ url, num, notify }) {
         };
 
         data.push(timing);
-
         notify({ timing });
-        await instance.exit();
     }
 
     return analyze(data);
