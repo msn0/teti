@@ -64,6 +64,4 @@ async function start({ url, num, notify, runner = require('./phantom-runner') })
     return analyze(data);
 }
 
-module.exports = function (params) {
-    return start(params);
-};
+module.exports = params => start(params);
