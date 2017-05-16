@@ -7,6 +7,10 @@
 
 > CLI for testing DOM timings
 
+[![Build Status](https://travis-ci.org/msn0/teti.svg?branch=master)](http://travis-ci.org/msn0/teti)
+
+## Installation
+
 ```
 npm i -g teti
 ```
