@@ -32,16 +32,20 @@ const verbose = cli.flags.verbose;
 
 const spinner = ora('Starting performance tests').start();
 
-function notify (current) {
+function verboseLog(message) {
+    if (verbose) {
+        console.log(message);
+    }
+}
+
+function notify(current, timing) {
     spinner.text = `Collecting DOM timings ${current}/${num}`;
+
+    verboseLog(timing);
 }
 
 teti({ url, num, notify }).then(output => {
     spinner.stop();
-
-    if (verbose) {
-        console.log(output.raw);
-    }
 
     const table = new Table({
         head: ['Timing', 'median', 'mean', 'p95', 'variance'],
@@ -63,6 +67,7 @@ teti({ url, num, notify }).then(output => {
         output.domComplete.variance]
     );
 
+    verboseLog(output.raw);
     console.log(`\nResults for ${url} based on ${num} requests:\n`);
     console.log(table.toString());
 });

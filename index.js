@@ -43,8 +43,6 @@ async function start({ url, num, notify }) {
     const data = [];
 
     for (var i = 1; i <= num; i++) {
-        notify(i);
-
         const instance = await phantom.create();
         const page = await instance.createPage();
         await page.open(url);
@@ -53,11 +51,14 @@ async function start({ url, num, notify }) {
             return window.performance.timing;
         });
 
-        data.push({
+        const timing = {
             domInteractive: domInteractive - connectStart,
             domComplete: domComplete - connectStart
-        });
+        };
 
+        data.push(timing);
+
+        notify(i, timing);
         await instance.exit();
     }
 
