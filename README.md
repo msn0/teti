@@ -3,9 +3,8 @@
     <img width=122 src="https://raw.githubusercontent.com/msn0/teti/master/teti.png" alt="teti" />
     <br>
     <br>
-	<img wodth=666 src="https://raw.githubusercontent.com/msn0/teti/master/screencast.gif" alt="teti screencast" />
+	<img width=666 src="https://raw.githubusercontent.com/msn0/teti/master/screencast.gif" alt="teti screencast" />
 	<br>
-    <br>
 </h1>
 
 > CLI for testing DOM timings
