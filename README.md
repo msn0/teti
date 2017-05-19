@@ -1,9 +1,9 @@
 <h1 align="center">
     <br>
-    <img width=122 src="https://raw.githubusercontent.com/msn0/teti/master/teti.png" alt="teti" />
+    <img width=122 height=71 src="https://raw.githubusercontent.com/msn0/teti/master/teti.png" alt="teti" />
     <br>
     <br>
-	<img width=606 src="https://raw.githubusercontent.com/msn0/teti/master/screencast.gif" alt="teti screencast" />
+	<img width=606 height=244 src="https://raw.githubusercontent.com/msn0/teti/master/screencast.gif" alt="teti screencast" />
 	<br>
 </h1>
 
