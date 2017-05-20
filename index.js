@@ -16,6 +16,10 @@ function getTimings(data) {
     };
 }
 
+function p95(data) {
+    return percentile(data, 95);
+}
+
 function analyze(data) {
     const domInteractiveList = getTimings(data)('domInteractive');
     const domCompleteList = getTimings(data)('domComplete');
@@ -25,13 +29,13 @@ function analyze(data) {
         domInteractive: {
             median: twoDigits(median.calc(domInteractiveList)),
             mean: twoDigits(mean.calc(domInteractiveList)),
-            p95: twoDigits(percentile.calc(domInteractiveList, 95)),
+            p95: twoDigits(p95(domInteractiveList)),
             variance: twoDigits(variance.calc(domInteractiveList))
         },
         domComplete: {
             median: twoDigits(median.calc(domCompleteList)),
             mean: twoDigits(mean.calc(domCompleteList)),
-            p95: twoDigits(percentile.calc(domCompleteList, 95)),
+            p95: twoDigits(p95(domCompleteList)),
             variance: twoDigits(variance.calc(domCompleteList))
         }
     };

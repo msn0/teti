@@ -29,7 +29,7 @@
     "phantom": "^4.0.3",
     "stats-mean": "^1.0.0",
     "stats-median": "^1.0.0",
-    "stats-percentile": "^1.2.0",
+    "stats-percentile": "^2.0.0",
     "stats-variance": "^1.0.0"
   },
   "devDependencies": {
