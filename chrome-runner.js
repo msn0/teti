@@ -22,13 +22,9 @@ module.exports = async function (url) {
     }
 
     function onPageLoad(Runtime) {
-        const js = 'JSON.stringify(window.performance.timing)';
-
-        return Runtime.evaluate({ expression: js })
-            .then(data => {
-                const { connectStart, domInteractive, domComplete } = JSON.parse(data.result.value);
-                return { connectStart, domInteractive, domComplete };
-            });
+        return Runtime
+            .evaluate({ expression: 'JSON.stringify(window.performance.timing)' })
+            .then(data => JSON.parse(data.result.value));
     }
 
     const launcher = await launchChrome();
