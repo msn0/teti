@@ -8,7 +8,7 @@ module.exports = async function (url) {
             port: 9222,
             autoSelectChrome: true,
             additionalFlags: [
-                '--window-size=412,732',
+                '--window-size=375,667',
                 '--disable-gpu',
                 headless ? '--headless' : ''
             ]
@@ -21,29 +21,19 @@ module.exports = async function (url) {
         });
     }
 
-    function onPageLoad(Runtime) {
-        return Runtime
-            .evaluate({ expression: 'JSON.stringify(window.performance.timing)' })
-            .then(data => JSON.parse(data.result.value));
-    }
-
     const launcher = await launchChrome();
 
-    return new Promise((resolve) => {
-        chrome(protocol => {
+    return new Promise(resolve => {
+        chrome(async protocol => {
             const { Page, Runtime } = protocol;
-
-            Promise.all([ Page.enable(), Runtime.enable() ]).then(() => {
-                Page.navigate({ url });
-                Page.loadEventFired(() => {
-                    onPageLoad(Runtime).then((data) => {
-                        protocol.close();
-                        launcher.kill();
-                        resolve(data);
-                    });
-                });
+            await Promise.all([ Page.enable(), Runtime.enable() ]);
+            Page.navigate({ url });
+            Page.loadEventFired(async () => {
+                const data = await Runtime.evaluate({ expression: 'JSON.stringify(window.performance.timing)' });
+                protocol.close();
+                launcher.kill();
+                resolve(JSON.parse(data.result.value));
             });
-
         }).on('error', err => {
             throw Error('Cannot connect to Chrome:' + err);
         });

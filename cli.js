@@ -29,6 +29,7 @@ const url = cli.input[0].startsWith('http')
     ? cli.input[0]
     : 'http://' + cli.input[0];
 const verbose = cli.flags.verbose;
+const runner = cli.flags.runner && require(`./${cli.flags.runner}-runner`);
 
 const spinner = ora('Starting performance tests').start();
 
@@ -47,7 +48,7 @@ function notify({ current, timing }) {
     }
 }
 
-teti({ url, num, notify }).then(output => {
+teti({ url, num, notify, runner }).then(output => {
     spinner.stop();
 
     const table = new Table({

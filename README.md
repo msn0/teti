@@ -27,6 +27,7 @@ Usage
 
 Options
   -n          number of tests to run (10 is default)
+  --runner    chrome or phantom (chrome is default, at least chrome 59 is needed)
   --verbose   output all data
 ```
 
@@ -46,6 +47,6 @@ Results for http://google.com based on 30 requests:
 └────────────────────┴──────────┴──────────┴──────────┴──────────┘
 ```
 
-## license
+## License
 
 MIT
