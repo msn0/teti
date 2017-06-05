@@ -41,7 +41,7 @@ function analyze(data) {
     };
 }
 
-async function start({ url, num, notify, runner = require('./phantom-runner') }) {
+async function start({ url, num, notify, runner = require('./chrome-runner') }) {
 
     const data = [];
 
