@@ -69,4 +69,4 @@ Results for http://google.com based on 5 requests:
 
 ## License
 
-MIT
+MIT &copy; [Michał Jezierski](https://github.com/msn0)
