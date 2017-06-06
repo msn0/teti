@@ -34,16 +34,16 @@ Options
 ## Examples
 
 ```
-$ teti google.com -n 30
+➜ teti google.com
 
-Results for http://google.com based on 30 requests:
+Results for http://google.com based on 10 requests:
 
 ┌────────────────────┬──────────┬──────────┬──────────┬──────────┐
 │ Timing             │ median   │ mean     │ p95      │ variance │
 ├────────────────────┼──────────┼──────────┼──────────┼──────────┤
-│ domInteractive     │ 0.27     │ 0.28     │ 0.47     │ 10       │
+│ domInteractive     │ 0.34     │ 0.34     │ 0.38     │ 0.25     │
 ├────────────────────┼──────────┼──────────┼──────────┼──────────┤
-│ domComplete        │ 0.71     │ 0.72     │ 0.99     │ 15.46    │
+│ domComplete        │ 0.83     │ 0.84     │ 0.92     │ 1.21     │
 └────────────────────┴──────────┴──────────┴──────────┴──────────┘
 ```
 
