@@ -5,15 +5,19 @@ test('should report DOM timings', async t => {
     const connectStart = getConnectStart();
     const domInteractive = getDomInteractive();
     const domComplete = getDomComplete();
+    const firstPaint = getFirstPaint();
 
     const timings = await teti({
         num: 3,
         url: '',
         notify: () => {},
         runner: () => Promise.resolve({
-            connectStart: connectStart.next().value,
-            domComplete: domComplete.next().value,
-            domInteractive: domInteractive.next().value
+            firstPaint: firstPaint.next().value,
+            timing: {
+                connectStart: connectStart.next().value,
+                domComplete: domComplete.next().value,
+                domInteractive: domInteractive.next().value
+            }
         })
     });
 
@@ -21,12 +25,13 @@ test('should report DOM timings', async t => {
         timings,
         {
             raw: [
-                { domInteractive: 99, domComplete: 9 },
-                { domInteractive: 118, domComplete: 18 },
-                { domInteractive: 147, domComplete: 27 }
+                { domInteractive: 99, domComplete: 9, firstPaint: 12 },
+                { domInteractive: 118, domComplete: 18, firstPaint: 21 },
+                { domInteractive: 147, domComplete: 27, firstPaint: 36 }
             ],
             domInteractive: { mad: 0.02, median: 0.12, mean: 0.12, p95: 0.15, variance: 0.39 },
-            domComplete: { mad: 0.01, median: 0.02, mean: 0.02, p95: 0.03, variance: 0.05 }
+            domComplete: { mad: 0.01, median: 0.02, mean: 0.02, p95: 0.03, variance: 0.05 },
+            firstPaint: { mad: 0.01, median: 0.02, mean: 0.02, p95: 0.04, variance: 0.1 }
         }
     );
 });
@@ -47,4 +52,10 @@ function* getConnectStart() {
     yield 1;
     yield 2;
     yield 3;
+}
+
+function* getFirstPaint() {
+    yield 12;
+    yield 21;
+    yield 36;
 }

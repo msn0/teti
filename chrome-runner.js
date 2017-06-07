@@ -29,10 +29,20 @@ module.exports = async function (url) {
             await Promise.all([ Page.enable(), Runtime.enable() ]);
             Page.navigate({ url });
             Page.loadEventFired(async () => {
-                const data = await Runtime.evaluate({ expression: 'JSON.stringify(window.performance.timing)' });
+                const timing = await Runtime.evaluate({
+                    expression: 'JSON.stringify(window.performance.timing)'
+                });
+                const firstPaint = await Runtime.evaluate({
+                    expression: `
+                        JSON.stringify(performance.getEntriesByType("paint").find(e => e.name === "first-paint"))
+                    `
+                });
                 protocol.close();
                 launcher.kill();
-                resolve(JSON.parse(data.result.value));
+                resolve({
+                    timing: JSON.parse(timing.result.value),
+                    firstPaint: JSON.parse(firstPaint.result.value).startTime
+                });
             });
         }).on('error', err => {
             throw Error('Cannot connect to Chrome:' + err);

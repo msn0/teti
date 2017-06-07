@@ -1,7 +1,7 @@
-const median = require('stats-median');
+const median = require('stats-median').calc;
 const percentile = require('stats-percentile');
-const mean = require('stats-mean');
-const variance = require('stats-variance');
+const mean = require('stats-mean').calc;
+const variance = require('stats-variance').calc;
 const mad = require('stats-mad');
 
 function twoDigits(value) {
@@ -22,23 +22,31 @@ function p95(data) {
 }
 
 function analyze(data) {
+    const firstPaintList = getTimings(data)('firstPaint');
     const domInteractiveList = getTimings(data)('domInteractive');
     const domCompleteList = getTimings(data)('domComplete');
 
     return {
         raw: data,
+        firstPaint: {
+            median: twoDigits(median(firstPaintList)),
+            mean: twoDigits(mean(firstPaintList)),
+            p95: twoDigits(p95(firstPaintList)),
+            variance: twoDigits(variance(firstPaintList)),
+            mad: twoDigits(mad(firstPaintList))
+        },
         domInteractive: {
-            median: twoDigits(median.calc(domInteractiveList)),
-            mean: twoDigits(mean.calc(domInteractiveList)),
+            median: twoDigits(median(domInteractiveList)),
+            mean: twoDigits(mean(domInteractiveList)),
             p95: twoDigits(p95(domInteractiveList)),
-            variance: twoDigits(variance.calc(domInteractiveList)),
+            variance: twoDigits(variance(domInteractiveList)),
             mad: twoDigits(mad(domInteractiveList))
         },
         domComplete: {
-            median: twoDigits(median.calc(domCompleteList)),
-            mean: twoDigits(mean.calc(domCompleteList)),
+            median: twoDigits(median(domCompleteList)),
+            mean: twoDigits(mean(domCompleteList)),
             p95: twoDigits(p95(domCompleteList)),
-            variance: twoDigits(variance.calc(domCompleteList)),
+            variance: twoDigits(variance(domCompleteList)),
             mad: twoDigits(mad(domCompleteList))
         }
     };
@@ -51,7 +59,9 @@ async function start({ url, num, notify, runner = require('./chrome-runner') }) 
     for (let current = 1; current <= num; current++) {
         notify({ current });
 
-        const { connectStart, domInteractive, domComplete } = await runner(url);
+        const response = await runner(url);
+        const { connectStart, domInteractive, domComplete } = response.timing;
+        const firstPaint = response.firstPaint;
 
         if (domInteractive === 0 || domComplete === 0) {
             console.log('Incorrect response, I\'m trying once again.');
@@ -60,6 +70,7 @@ async function start({ url, num, notify, runner = require('./chrome-runner') }) 
         }
 
         const timing = {
+            firstPaint: firstPaint.toFixed(0) * 1,
             domInteractive: domInteractive - connectStart,
             domComplete: domComplete - connectStart
         };

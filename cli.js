@@ -6,6 +6,7 @@ const meow = require('meow');
 const teti = require('./');
 const ora = require('ora');
 const Table = require('cli-table');
+const oneLine = require('common-tags').oneLine;
 
 const cli = meow(`
   Usage
@@ -44,7 +45,7 @@ function notify({ current, timing }) {
         spinner.text = `Collecting DOM timings ${current}/${num} `;
     }
     if (timing) {
-        verboseLog(timing);
+        verboseLog(JSON.stringify(timing));
     }
 }
 
@@ -56,6 +57,14 @@ teti({ url, num, notify, runner }).then(output => {
         colWidths: [20, 10, 10, 10, 8, 8]
     });
 
+    table.push([
+        'firstPaint',
+        output.firstPaint.median,
+        output.firstPaint.mean,
+        output.firstPaint.p95,
+        output.firstPaint.variance,
+        output.firstPaint.mad
+    ]);
     table.push([
         'domInteractive',
         output.domInteractive.median,

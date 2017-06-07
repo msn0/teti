@@ -9,5 +9,5 @@ module.exports = async function (url) {
     });
     await instance.exit();
 
-    return timing;
+    return { timing };
 };
