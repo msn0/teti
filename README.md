@@ -38,33 +38,37 @@ Options
 
 Results for http://google.com based on 10 requests:
 
-┌────────────────────┬──────────┬──────────┬──────────┬──────────┐
-│ Timing             │ median   │ mean     │ p95      │ variance │
-├────────────────────┼──────────┼──────────┼──────────┼──────────┤
-│ domInteractive     │ 0.34     │ 0.34     │ 0.38     │ 0.25     │
-├────────────────────┼──────────┼──────────┼──────────┼──────────┤
-│ domComplete        │ 0.83     │ 0.84     │ 0.92     │ 1.21     │
-└────────────────────┴──────────┴──────────┴──────────┴──────────┘
+┌────────────────────┬──────────┬──────────┬──────────┬────────┬────────┐
+│ Timing             │ median   │ mean     │ p95      │ σ²     │ MAD    │
+├────────────────────┼──────────┼──────────┼──────────┼────────┼────────┤
+│ firstPaint         │ 0.46     │ 0.47     │ 0.53     │ 0.98   │ 0.01   │
+├────────────────────┼──────────┼──────────┼──────────┼────────┼────────┤
+│ domInteractive     │ 0.34     │ 0.34     │ 0.36     │ 0.71   │ 0.01   │
+├────────────────────┼──────────┼──────────┼──────────┼────────┼────────┤
+│ domComplete        │ 0.93     │ 0.89     │ 1.01     │ 25.21  │ 0.01   │
+└────────────────────┴──────────┴──────────┴──────────┴────────┴────────┘
 ```
 
 ```
 ➜ teti google.com -n 5 --verbose
 
-⠋ Collecting DOM timings 1/5 { domInteractive: 335, domComplete: 894 }
-⠋ Collecting DOM timings 2/5 { domInteractive: 324, domComplete: 898 }
-⠋ Collecting DOM timings 3/5 { domInteractive: 364, domComplete: 925 }
-⠏ Collecting DOM timings 4/5 { domInteractive: 328, domComplete: 874 }
-⠏ Collecting DOM timings 5/5 { domInteractive: 333, domComplete: 914 }
+⠋ Collecting DOM timings 1/5 {"firstPaint":427,"domInteractive":311,"domComplete":893}
+⠋ Collecting DOM timings 2/5 {"firstPaint":442,"domInteractive":316,"domComplete":903}
+⠋ Collecting DOM timings 3/5 {"firstPaint":420,"domInteractive":301,"domComplete":908}
+⠋ Collecting DOM timings 4/5 {"firstPaint":436,"domInteractive":323,"domComplete":924}
+⠋ Collecting DOM timings 5/5 {"firstPaint":435,"domInteractive":318,"domComplete":901}
 
-Results for http://google.com based on 5 requests:
+Results for https://google.com based on 5 requests:
 
-┌────────────────────┬──────────┬──────────┬──────────┬──────────┐
-│ Timing             │ median   │ mean     │ p95      │ variance │
-├────────────────────┼──────────┼──────────┼──────────┼──────────┤
-│ domInteractive     │ 0.33     │ 0.34     │ 0.36     │ 0.2      │
-├────────────────────┼──────────┼──────────┼──────────┼──────────┤
-│ domComplete        │ 0.9      │ 0.9      │ 0.93     │ 0.31     │
-└────────────────────┴──────────┴──────────┴──────────┴──────────┘
+┌────────────────────┬──────────┬──────────┬──────────┬────────┬────────┐
+│ Timing             │ median   │ mean     │ p95      │ σ²     │ MAD    │
+├────────────────────┼──────────┼──────────┼──────────┼────────┼────────┤
+│ firstPaint         │ 0.43     │ 0.43     │ 0.44     │ 0.06   │ 0.01   │
+├────────────────────┼──────────┼──────────┼──────────┼────────┼────────┤
+│ domInteractive     │ 0.32     │ 0.31     │ 0.32     │ 0.06   │ 0.01   │
+├────────────────────┼──────────┼──────────┼──────────┼────────┼────────┤
+│ domComplete        │ 0.9      │ 0.91     │ 0.92     │ 0.11   │ 0.01   │
+└────────────────────┴──────────┴──────────┴──────────┴────────┴────────┘
 ```
 
 ## License
