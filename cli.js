@@ -52,8 +52,8 @@ teti({ url, num, notify, runner }).then(output => {
     spinner.stop();
 
     const table = new Table({
-        head: ['Timing', 'median', 'mean', 'p95', 'variance'],
-        colWidths: [20, 10, 10, 10, 10]
+        head: ['Timing', 'median', 'mean', 'p95', 'σ²', 'MAD'],
+        colWidths: [20, 10, 10, 10, 8, 8]
     });
 
     table.push([
@@ -61,15 +61,17 @@ teti({ url, num, notify, runner }).then(output => {
         output.domInteractive.median,
         output.domInteractive.mean,
         output.domInteractive.p95,
-        output.domInteractive.variance]
-    );
+        output.domInteractive.variance,
+        output.domInteractive.mad
+    ]);
     table.push([
         'domComplete',
         output.domComplete.median,
         output.domComplete.mean,
         output.domComplete.p95,
-        output.domComplete.variance]
-    );
+        output.domComplete.variance,
+        output.domInteractive.mad
+    ]);
 
     console.log(`\nResults for ${url} based on ${num} requests:\n`);
     console.log(table.toString());

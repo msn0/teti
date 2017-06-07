@@ -29,6 +29,7 @@
     "meow": "^3.7.0",
     "ora": "^1.2.0",
     "phantom": "^4.0.3",
+    "stats-mad": "^1.0.0",
     "stats-mean": "^1.0.0",
     "stats-median": "^1.0.0",
     "stats-percentile": "^2.0.0",

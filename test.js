@@ -25,8 +25,8 @@ test('should report DOM timings', async t => {
                 { domInteractive: 118, domComplete: 18 },
                 { domInteractive: 147, domComplete: 27 }
             ],
-            domInteractive: { median: 0.12, mean: 0.12, p95: 0.15, variance: 0.39 },
-            domComplete: { median: 0.02, mean: 0.02, p95: 0.03, variance: 0.05 }
+            domInteractive: { mad: 0.02, median: 0.12, mean: 0.12, p95: 0.15, variance: 0.39 },
+            domComplete: { mad: 0.01, median: 0.02, mean: 0.02, p95: 0.03, variance: 0.05 }
         }
     );
 });

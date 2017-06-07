@@ -2,6 +2,7 @@ const median = require('stats-median');
 const percentile = require('stats-percentile');
 const mean = require('stats-mean');
 const variance = require('stats-variance');
+const mad = require('stats-mad');
 
 function twoDigits(value) {
     return (value / 1000).toFixed(2) * 1;
@@ -30,13 +31,15 @@ function analyze(data) {
             median: twoDigits(median.calc(domInteractiveList)),
             mean: twoDigits(mean.calc(domInteractiveList)),
             p95: twoDigits(p95(domInteractiveList)),
-            variance: twoDigits(variance.calc(domInteractiveList))
+            variance: twoDigits(variance.calc(domInteractiveList)),
+            mad: twoDigits(mad(domInteractiveList))
         },
         domComplete: {
             median: twoDigits(median.calc(domCompleteList)),
             mean: twoDigits(mean.calc(domCompleteList)),
             p95: twoDigits(p95(domCompleteList)),
-            variance: twoDigits(variance.calc(domCompleteList))
+            variance: twoDigits(variance.calc(domCompleteList)),
+            mad: twoDigits(mad(domCompleteList))
         }
     };
 }
