@@ -7,7 +7,7 @@
 	<br>
 </h1>
 
-> CLI for testing DOM timings with Headless Chrome (or PhantomJS) under the hood.
+> CLI for testing DOM timings built upon Headless Chrome & Lighthouse 💜 (or PhantomJS).
 
 [![Build Status](https://travis-ci.org/msn0/teti.svg?branch=master)](http://travis-ci.org/msn0/teti)
 
