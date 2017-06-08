@@ -6,7 +6,6 @@ const meow = require('meow');
 const teti = require('./');
 const ora = require('ora');
 const Table = require('cli-table');
-const oneLine = require('common-tags').oneLine;
 
 const cli = meow(`
   Usage
