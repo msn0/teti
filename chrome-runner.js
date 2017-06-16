@@ -32,16 +32,18 @@ module.exports = async function (url) {
                 const timing = await Runtime.evaluate({
                     expression: 'JSON.stringify(window.performance.timing)'
                 });
-                const firstPaint = await Runtime.evaluate({
+                const paint = await Runtime.evaluate({
                     expression: `
-                        JSON.stringify(performance.getEntriesByType("paint").find(e => e.name === "first-paint"))
+                        JSON.stringify(performance.getEntriesByType("paint"))
                     `
                 });
                 protocol.close();
                 launcher.kill();
+                const paintMarks = JSON.parse(paint.result.value);
                 resolve({
                     timing: JSON.parse(timing.result.value),
-                    firstPaint: JSON.parse(firstPaint.result.value).startTime
+                    firstPaint: paintMarks.find(e => e.name === 'first-paint').startTime,
+                    firstContentfulPaint: paintMarks.find(e => e.name === 'first-contentful-paint').startTime
                 });
             });
         }).on('error', err => {

@@ -65,6 +65,14 @@ teti({ url, num, notify, runner }).then(output => {
         output.firstPaint.mad
     ]);
     table.push([
+        'firstContentfulPaint',
+        output.firstContentfulPaint.median,
+        output.firstContentfulPaint.mean,
+        output.firstContentfulPaint.p95,
+        output.firstContentfulPaint.variance,
+        output.firstContentfulPaint.mad
+    ]);
+    table.push([
         'domInteractive',
         output.domInteractive.median,
         output.domInteractive.mean,

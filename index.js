@@ -23,6 +23,7 @@ function p95(data) {
 
 function analyze(data) {
     const firstPaintList = getTimings(data)('firstPaint');
+    const firstContentfulPaintList = getTimings(data)('firstContentfulPaint');
     const domInteractiveList = getTimings(data)('domInteractive');
     const domCompleteList = getTimings(data)('domComplete');
 
@@ -34,6 +35,13 @@ function analyze(data) {
             p95: twoDigits(p95(firstPaintList)),
             variance: twoDigits(variance(firstPaintList)),
             mad: twoDigits(mad(firstPaintList))
+        },
+        firstContentfulPaint: {
+            median: twoDigits(median(firstContentfulPaintList)),
+            mean: twoDigits(mean(firstContentfulPaintList)),
+            p95: twoDigits(p95(firstContentfulPaintList)),
+            variance: twoDigits(variance(firstContentfulPaintList)),
+            mad: twoDigits(mad(firstContentfulPaintList))
         },
         domInteractive: {
             median: twoDigits(median(domInteractiveList)),
@@ -62,15 +70,16 @@ async function start({ url, num, notify, runner = require('./chrome-runner') }) 
         const response = await runner(url);
         const { connectStart, domInteractive, domComplete } = response.timing;
         const firstPaint = response.firstPaint;
+        const firstContentfulPaint = response.firstContentfulPaint;
 
         if (domInteractive === 0 || domComplete === 0) {
             console.log('Incorrect response, I\'m trying once again.');
             current--;
             continue;
         }
-
         const timing = {
             firstPaint: firstPaint.toFixed(0) * 1,
+            firstContentfulPaint: firstContentfulPaint.toFixed(0) * 1,
             domInteractive: domInteractive - connectStart,
             domComplete: domComplete - connectStart
         };
