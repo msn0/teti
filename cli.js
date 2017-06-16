@@ -55,31 +55,18 @@ teti({ url, num, notify, runner }).then(output => {
         head: ['Timing', 'median', 'mean', 'p95', 'σ²', 'MAD'],
         colWidths: [20, 10, 10, 10, 8, 8]
     });
+    console.log(output);
 
-    table.push([
-        'firstPaint',
-        output.firstPaint.median,
-        output.firstPaint.mean,
-        output.firstPaint.p95,
-        output.firstPaint.variance,
-        output.firstPaint.mad
-    ]);
-    table.push([
-        'domInteractive',
-        output.domInteractive.median,
-        output.domInteractive.mean,
-        output.domInteractive.p95,
-        output.domInteractive.variance,
-        output.domInteractive.mad
-    ]);
-    table.push([
-        'domComplete',
-        output.domComplete.median,
-        output.domComplete.mean,
-        output.domComplete.p95,
-        output.domComplete.variance,
-        output.domInteractive.mad
-    ]);
+    output.forEach(o => {
+        table.push([
+            o.name,
+            o.metrics.median,
+            o.metrics.mean,
+            o.metrics.p95,
+            o.metrics.variance,
+            o.metrics.mad
+        ]);
+    });
 
     console.log(`\nResults for ${url} based on ${num} requests:\n`);
     console.log(table.toString());

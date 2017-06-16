@@ -4,16 +4,22 @@ const mean = require('stats-mean').calc;
 const variance = require('stats-variance').calc;
 const mad = require('stats-mad');
 
+const timingsToCollect = [
+    'domLoading', 'domInteractive', 'domComplete'
+];
+
 function twoDigits(value) {
     return (value / 1000).toFixed(2) * 1;
 }
 
-function getTimings(data) {
-    return function (name) {
-        return data
-          .map(timing => timing[name])
-          .filter(timing => timing > 0)
-          .sort();
+function getTimings(measurements) {
+    return function(name) {
+        return measurements
+            .map(measurement => {
+                return measurement
+                    .filter(timing => timing.name === name)
+                    .map(timing => timing.value);
+            }).map(t => t[0]).sort();
     };
 }
 
@@ -22,34 +28,22 @@ function p95(data) {
 }
 
 function analyze(data) {
-    const firstPaintList = getTimings(data)('firstPaint');
-    const domInteractiveList = getTimings(data)('domInteractive');
-    const domCompleteList = getTimings(data)('domComplete');
+    const getDataTimings = getTimings(data);
 
-    return {
-        raw: data,
-        firstPaint: {
-            median: twoDigits(median(firstPaintList)),
-            mean: twoDigits(mean(firstPaintList)),
-            p95: twoDigits(p95(firstPaintList)),
-            variance: twoDigits(variance(firstPaintList)),
-            mad: twoDigits(mad(firstPaintList))
-        },
-        domInteractive: {
-            median: twoDigits(median(domInteractiveList)),
-            mean: twoDigits(mean(domInteractiveList)),
-            p95: twoDigits(p95(domInteractiveList)),
-            variance: twoDigits(variance(domInteractiveList)),
-            mad: twoDigits(mad(domInteractiveList))
-        },
-        domComplete: {
-            median: twoDigits(median(domCompleteList)),
-            mean: twoDigits(mean(domCompleteList)),
-            p95: twoDigits(p95(domCompleteList)),
-            variance: twoDigits(variance(domCompleteList)),
-            mad: twoDigits(mad(domCompleteList))
-        }
-    };
+    return timingsToCollect.map(t => {
+        const timings = getDataTimings(t);
+
+        return {
+            name: t,
+            metrics: {
+                median: twoDigits(median(timings)),
+                mean: twoDigits(mean(timings)),
+                p95: twoDigits(p95(timings)),
+                variance: twoDigits(variance(timings)),
+                mad: twoDigits(mad(timings))
+            }
+        };
+    });
 }
 
 async function start({ url, num, notify, runner = require('./chrome-runner') }) {
@@ -60,26 +54,30 @@ async function start({ url, num, notify, runner = require('./chrome-runner') }) 
         notify({ current });
 
         const response = await runner(url);
-        const { connectStart, domInteractive, domComplete } = response.timing;
-        const firstPaint = response.firstPaint;
+        const { timing, paint } = response;
 
-        if (domInteractive === 0 || domComplete === 0) {
-            console.log('Incorrect response, I\'m trying once again.');
-            current--;
-            continue;
-        }
+        const timings = Object.keys(timing)
+            .map(name => ({
+                name,
+                value: timing[name] - timing.connectStart
+            }))
+            .filter(t => t.value > 0);
 
-        const timing = {
-            firstPaint: firstPaint.toFixed(0) * 1,
-            domInteractive: domInteractive - connectStart,
-            domComplete: domComplete - connectStart
-        };
+        const paints = Object.keys(paint)
+            .map(name => ({
+                name,
+                value: paint[name].startTime.toFixed(0) * 1
+            }))
+            .filter(t => t.value > 0);
 
-        data.push(timing);
-        notify({ timing });
+        data.push(timings);
+
+        notify({ timings });
     }
 
-    return analyze(data);
+    const analyzedData = analyze(data);
+    console.log(analyzedData);
+    return analyzedData;
 }
 
 module.exports = params => start(params);
