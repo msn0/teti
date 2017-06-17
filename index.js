@@ -50,8 +50,7 @@ async function start({ url, num, notify, runner = require('./chrome-runner') }) 
     for (let current = 1; current <= num; current++) {
         notify({ current });
 
-        const response = await runner(url);
-        const { timing, paint } = response;
+        const { timing, paint } = await runner(url);
 
         const timings = Object.keys(timing)
             .map(name => ({
@@ -70,7 +69,6 @@ async function start({ url, num, notify, runner = require('./chrome-runner') }) 
     }
 
     const analyzedData = analyze(data);
-    console.log(analyzedData);
     return analyzedData;
 }
 
