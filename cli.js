@@ -39,12 +39,12 @@ function verboseLog(message) {
     }
 }
 
-function notify({ current, timing }) {
+function notify({ current, timings }) {
     if (current) {
         spinner.text = `Collecting DOM timings ${current}/${num} `;
     }
-    if (timing) {
-        verboseLog(JSON.stringify(timing));
+    if (timings) {
+        verboseLog('\n' + JSON.stringify(timings));
     }
 }
 
@@ -55,7 +55,6 @@ teti({ url, num, notify, runner }).then(output => {
         head: ['Timing', 'median', 'mean', 'p95', 'σ²', 'MAD'],
         colWidths: [20, 10, 10, 10, 8, 8]
     });
-    console.log(output);
 
     output.forEach(o => {
         table.push([
