@@ -3,10 +3,7 @@ const percentile = require('stats-percentile');
 const mean = require('stats-mean').calc;
 const variance = require('stats-variance').calc;
 const mad = require('stats-mad');
-
-const timingsToCollect = [
-    'domLoading', 'domInteractive', 'domComplete'
-];
+const timingsToCollect = require('./timings');
 
 function twoDigits(value) {
     return (value / 1000).toFixed(2) * 1;
@@ -61,17 +58,14 @@ async function start({ url, num, notify, runner = require('./chrome-runner') }) 
                 name,
                 value: timing[name] - timing.connectStart
             }))
-            .filter(t => t.value > 0);
-
-        const paints = Object.keys(paint)
-            .map(name => ({
-                name,
-                value: paint[name].startTime.toFixed(0) * 1
-            }))
+            .concat(
+                paint.map(paint => ({
+                    name: paint.name,
+                    value: paint.startTime.toFixed(0) * 1
+                })))
             .filter(t => t.value > 0);
 
         data.push(timings);
-
         notify({ timings });
     }
 
