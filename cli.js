@@ -30,6 +30,7 @@ const url = cli.input[0].startsWith('http')
     : 'http://' + cli.input[0];
 const verbose = cli.flags.verbose;
 const runner = cli.flags.runner && require(`./${cli.flags.runner}-runner`);
+const custom = cli.flags.custom || [];
 
 const spinner = ora('Starting performance tests').start();
 
@@ -48,12 +49,16 @@ function notify({ current, timings }) {
     }
 }
 
-teti({ url, num, notify, runner }).then(output => {
+teti({ url, num, notify, runner, custom }).then(output => {
     spinner.stop();
+
+    const l = output.reduce((acc, next) => {
+        return next.name.length > acc ? next.name.length : acc;
+    }, 0);
 
     const table = new Table({
         head: ['Timing', 'median', 'mean', 'p95', 'σ²', 'MAD'],
-        colWidths: [20, 10, 10, 10, 8, 8]
+        colWidths: [l + 2, 10, 10, 10, 8, 8]
     });
 
     output.forEach(o => {

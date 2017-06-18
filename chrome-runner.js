@@ -35,11 +35,15 @@ module.exports = async function (url) {
                 const paint = await Runtime.evaluate({
                     expression: 'JSON.stringify(performance.getEntriesByType("paint"))'
                 });
+                const mark = await Runtime.evaluate({
+                    expression: 'JSON.stringify(performance.getEntriesByType("mark"))'
+                });
                 protocol.close();
                 launcher.kill();
                 resolve({
                     timing: JSON.parse(timing.result.value),
-                    paint: JSON.parse(paint.result.value)
+                    paint: JSON.parse(paint.result.value),
+                    mark: JSON.parse(mark.result.value)
                 });
             });
         }).on('error', err => {

@@ -24,10 +24,10 @@ function p95(data) {
     return percentile(data, 95);
 }
 
-function analyze(data) {
+function analyze(data, custom) {
     const getDataTimings = getTimings(data);
 
-    return timingsToCollect.map(t => {
+    return timingsToCollect.concat(custom).map(t => {
         const timings = getDataTimings(t);
 
         return {
@@ -43,14 +43,14 @@ function analyze(data) {
     });
 }
 
-async function start({ url, num, notify, runner = require('./chrome-runner') }) {
+async function start({ url, num, notify, custom, runner = require('./chrome-runner') }) {
 
     const data = [];
 
     for (let current = 1; current <= num; current++) {
         notify({ current });
 
-        const { timing, paint } = await runner(url);
+        const { timing, paint, mark } = await runner(url);
 
         const timings = Object.keys(timing)
             .map(name => ({
@@ -62,13 +62,18 @@ async function start({ url, num, notify, runner = require('./chrome-runner') }) 
                     name: paint.name,
                     value: paint.startTime.toFixed(0) * 1
                 })))
+            .concat(
+                mark.map(mark => ({
+                    name: mark.name,
+                    value: mark.startTime.toFixed(0) * 1
+                })))
             .filter(t => t.value > 0);
 
         data.push(timings);
         notify({ timings });
     }
 
-    const analyzedData = analyze(data);
+    const analyzedData = analyze(data, custom);
     return analyzedData;
 }
 
