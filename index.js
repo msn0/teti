@@ -72,8 +72,7 @@ async function start({ url, num, notify, custom, runner = require('./chrome-runn
         notify({ timings });
     }
 
-    const analyzedData = analyze(data, custom);
-    return analyzedData;
+    return analyze(data, custom);
 }
 
 module.exports = params => start(params);
