@@ -7,10 +7,12 @@ test('should report DOM timings', async t => {
     const domInteractive = getDomInteractive();
     const domComplete = getDomComplete();
     const firstPaint = getFirstPaint();
+    const fooBar = getFooBar();
 
     const timings = await teti({
         num: 5,
         url: '',
+        custom: ['foo bar'],
         notify: () => {},
         runner: () => Promise.resolve({
             timing: {
@@ -22,6 +24,12 @@ test('should report DOM timings', async t => {
             paint: [{
                 name: 'first-paint',
                 startTime: firstPaint.next().value
+            }],
+            mark: [{
+                name: 'foo bar',
+                entryType: 'mark',
+                startTime: fooBar.next().value,
+                duration: 0
             }]
         })
     });
@@ -63,6 +71,15 @@ test('should report DOM timings', async t => {
                 median: 0.58,
                 p95: 0.68,
                 variance: 2.41
+            }
+        }, {
+            name: 'foo bar',
+            metrics: {
+                mad: 0.01,
+                mean: 2.13,
+                median: 2.16,
+                p95: 2.17,
+                variance: 4.56
             }
         }]
     );
@@ -106,4 +123,12 @@ function* getFirstPaint() {
     yield 680;
     yield 562;
     yield 583;
+}
+
+function* getFooBar() {
+    yield 2160;
+    yield 2170;
+    yield 1993;
+    yield 2162;
+    yield 2153;
 }
