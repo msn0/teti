@@ -1,6 +1,6 @@
 {
   "name": "teti",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "description": "Test DOM performance timings",
   "main": "index.js",
   "bin": {
@@ -28,7 +28,6 @@
     "lighthouse": "2.0.0",
     "meow": "^3.7.0",
     "ora": "^1.2.0",
-    "phantom": "^4.0.4",
     "stats-mad": "^1.0.0",
     "stats-mean": "^1.0.0",
     "stats-median": "^1.0.0",
