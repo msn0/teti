@@ -27,7 +27,7 @@ Usage
 
 Options
   -n          number of tests to run (10 is default)
-  --custom    custom [User Timing](https://developer.mozilla.org/en-US/docs/Web/API/User_Timing_API) (performance.mark) to be measured
+  --custom    custom User Timing (performance.mark) to be measured
   --verbose   output all data
 ```
 
@@ -39,7 +39,7 @@ Options
 Results for http://google.com based on 10 requests:
 
 ┌────────────────┬──────────┬──────────┬──────────┬────────┬────────┐
-│ Timing         │ median   │ mean     │ p95      │ σ²     │ [MAD](https://en.wikipedia.org/wiki/Median_absolute_deviation)    │
+│ Timing         │ median   │ mean     │ p95      │ σ²     │ MAD    │
 ├────────────────┼──────────┼──────────┼──────────┼────────┼────────┤
 │ domLoading     │ 0.21     │ 0.2      │ 0.21     │ 0.03   │ 0      │
 ├────────────────┼──────────┼──────────┼──────────┼────────┼────────┤
@@ -57,7 +57,7 @@ Results for http://google.com based on 10 requests:
 Results for https://www.theguardian.com/football based on 30 requests:
 
 ┌─────────────────┬──────────┬──────────┬──────────┬────────┬────────┐
-│ Timing          │ median   │ mean     │ p95      │ σ²     │ [MAD](https://en.wikipedia.org/wiki/Median_absolute_deviation)    │
+│ Timing          │ median   │ mean     │ p95      │ σ²     │ MAD    │
 ├─────────────────┼──────────┼──────────┼──────────┼────────┼────────┤
 │ domLoading      │ 0.16     │ 0.16     │ 0.17     │ 0.03   │ 0      │
 ├─────────────────┼──────────┼──────────┼──────────┼────────┼────────┤
