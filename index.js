@@ -43,6 +43,13 @@ function analyze(data, custom) {
     });
 }
 
+function toTiming({ name, startTime }) {
+    return {
+        name,
+        value: startTime.toFixed(0) * 1
+    };
+}
+
 async function start({ url, num, notify, custom, runner = require('./chrome-runner') }) {
 
     const data = [];
@@ -57,16 +64,8 @@ async function start({ url, num, notify, custom, runner = require('./chrome-runn
                 name,
                 value: timing[name] - timing.connectStart
             }))
-            .concat(
-                paint.map(paint => ({
-                    name: paint.name,
-                    value: paint.startTime.toFixed(0) * 1
-                })))
-            .concat(
-                mark.map(mark => ({
-                    name: mark.name,
-                    value: mark.startTime.toFixed(0) * 1
-                })))
+            .concat(paint.map(toTiming))
+            .concat(mark.map(toTiming))
             .filter(t => t.value > 0);
 
         data.push(timings);
