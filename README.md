@@ -47,6 +47,7 @@ domInteractive    0.29  0.29  0.32  0.36  0.02
 
 ```
 ➜ teti https://www.theguardian.com/football -n 30 --custom "commercial boot"
+
 Results for https://www.theguardian.com/football based on 30 requests:
 
          Timing  median  mean   p95      σ²   MAD
