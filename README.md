@@ -58,7 +58,16 @@ Results for https://www.theguardian.com/football based on 30 requests:
 commercial boot    0.87  0.84  1.06   17.73   0.1
 ```
 
-## Metrics
+## Metrics & Timings
+
+By default teti collects the following timings:
+
+* [domLoading](https://developer.mozilla.org/en-US/docs/Web/API/PerformanceTiming/domLoading)
+* [domInteractive](https://developer.mozilla.org/en-US/docs/Web/API/PerformanceTiming/domInteractive)
+* [domComplete](https://developer.mozilla.org/en-US/docs/Web/API/PerformanceTiming/domComplete)
+* [first-paint](https://github.com/WICG/paint-timing)
+
+Based on collected data, the following statistical metrics are calculated:
 
 * [median](https://en.wikipedia.org/wiki/Median)
 * [mean](https://en.wikipedia.org/wiki/Mean)
