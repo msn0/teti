@@ -5,7 +5,8 @@
 const meow = require('meow');
 const teti = require('./');
 const ora = require('ora');
-const Table = require('cli-table');
+const chalk = require('chalk');
+const table = require('text-table');
 
 const cli = meow(`
   Usage
@@ -52,26 +53,26 @@ function notify({ current, timings }) {
 teti({ url, num, notify, runner, custom }).then(output => {
     spinner.stop();
 
-    const l = output.reduce((acc, next) => {
-        return next.name.length > acc ? next.name.length : acc;
-    }, 0);
+    const headings = [
+        'Timing',
+        'median',
+        'mean',
+        'p95',
+        'σ²',
+        'MAD'
+    ].map(h => chalk.cyan(h));
 
-    const table = new Table({
-        head: ['Timing', 'median', 'mean', 'p95', 'σ²', 'MAD'],
-        colWidths: [l + 2, 10, 10, 10, 8, 8]
-    });
+    const t = table([headings].concat(output.map(o => {
+        return [
+            chalk.blue(o.name),
+            chalk.yellow(o.metrics.median),
+            chalk.yellow(o.metrics.mean),
+            chalk.yellow(o.metrics.p95),
+            chalk.yellow(o.metrics.variance),
+            chalk.yellow(o.metrics.mad)
+        ];
+    })), { align: [ 'r', 'r', 'r', 'r', 'r', 'r' ] });
 
-    output.forEach(o => {
-        table.push([
-            o.name,
-            o.metrics.median,
-            o.metrics.mean,
-            o.metrics.p95,
-            o.metrics.variance,
-            o.metrics.mad
-        ]);
-    });
-
-    console.log(`\nResults for ${url} based on ${num} requests:\n`);
-    console.log(table.toString());
+    console.log(`\nResults for ${chalk.bgMagenta(url)} based on ${chalk.bgMagenta(num)} requests:\n`);
+    console.log(`${t}\n`);
 });
