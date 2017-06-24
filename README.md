@@ -58,6 +58,14 @@ Results for https://www.theguardian.com/football based on 30 requests:
 commercial boot    0.87  0.84  1.06   17.73   0.1
 ```
 
+## Metrics
+
+* [median](https://en.wikipedia.org/wiki/Median)
+* [mean](https://en.wikipedia.org/wiki/Mean)
+* p95 - 95th [percentile](https://en.wikipedia.org/wiki/Percentile)
+* σ² - [variance](https://en.wikipedia.org/wiki/Variance)
+* MAD - [median absolute deviation](https://en.wikipedia.org/wiki/Median_absolute_deviation)
+
 ## License
 
 MIT &copy; [Michał Jezierski](https://github.com/msn0)
