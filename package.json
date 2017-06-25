@@ -1,6 +1,6 @@
 {
   "name": "teti",
-  "version": "4.2.0",
+  "version": "4.3.0",
   "description": "Test DOM performance timings",
   "main": "index.js",
   "bin": {
