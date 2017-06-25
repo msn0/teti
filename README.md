@@ -3,7 +3,7 @@
     <img width=122 height=71 src="https://raw.githubusercontent.com/msn0/teti/master/teti.png" alt="teti" />
     <br>
     <br>
-	<img width=606 src="https://raw.githubusercontent.com/msn0/teti/master/screencast-teti4.gif" alt="teti screencast" />
+	<img width=600 src="https://raw.githubusercontent.com/msn0/teti/master/screencast-teti4.gif" alt="teti screencast" />
 	<br>
 </h1>
 
@@ -57,6 +57,23 @@ Results for https://www.theguardian.com/football based on 30 requests:
     first-paint    0.34  0.34  0.38    0.58  0.01
 commercial boot    0.87  0.84  1.06   17.73   0.1
 ```
+
+## Metrics & Timings
+
+By default teti collects the following timings:
+
+* [domLoading](https://developer.mozilla.org/en-US/docs/Web/API/PerformanceTiming/domLoading)
+* [domInteractive](https://developer.mozilla.org/en-US/docs/Web/API/PerformanceTiming/domInteractive)
+* [domComplete](https://developer.mozilla.org/en-US/docs/Web/API/PerformanceTiming/domComplete)
+* [first-paint](https://github.com/WICG/paint-timing)
+
+Based on collected data, the following statistical metrics are calculated:
+
+* [median](https://en.wikipedia.org/wiki/Median)
+* [mean](https://en.wikipedia.org/wiki/Mean)
+* p95 - 95th [percentile](https://en.wikipedia.org/wiki/Percentile)
+* σ² - [variance](https://en.wikipedia.org/wiki/Variance)
+* MAD - [median absolute deviation](https://en.wikipedia.org/wiki/Median_absolute_deviation)
 
 ## License
 
