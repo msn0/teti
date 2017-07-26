@@ -1,6 +1,6 @@
 <h1 align="center">
     <br>
-    <img width=122 height=71 src="https://raw.githubusercontent.com/msn0/teti/master/teti.png" alt="teti" />
+    <img width=140 height=135 src="https://raw.githubusercontent.com/msn0/teti/master/teti-by-kasia.png" alt="teti" />
     <br>
     <br>
 	<img width=600 src="https://raw.githubusercontent.com/msn0/teti/master/screencast-teti4.gif" alt="teti screencast" />
