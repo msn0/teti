@@ -1,0 +1,3 @@
+theme: jekyll-theme-cayman
+title: teti
+description: CLI for testing DOM timings built upon Headless Chrome & Lighthouse 💜
