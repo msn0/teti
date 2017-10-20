@@ -1,12 +1,3 @@
-<h1 align="center">
-    <br>
-    <img width=140 height=135 src="https://raw.githubusercontent.com/msn0/teti/master/teti-by-kasia.png" alt="teti" />
-    <br>
-    <br>
-	<img width=600 src="https://raw.githubusercontent.com/msn0/teti/master/screencast-teti4.gif" alt="teti screencast" />
-	<br>
-</h1>
-
 > CLI for testing DOM timings built upon [Headless Chrome](https://developers.google.com/web/updates/2017/04/headless-chrome) & [Lighthouse](https://github.com/GoogleChrome/lighthouse) 💜
 
 [![Build Status](https://travis-ci.org/msn0/teti.svg?branch=master)](http://travis-ci.org/msn0/teti)
