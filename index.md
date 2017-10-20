@@ -1,3 +1,14 @@
+---
+layout: default
+---
+
+<br/>
+
+![teti](https://raw.githubusercontent.com/msn0/teti/master/teti-by-kasia.png){: .center-image }
+![screencast](https://raw.githubusercontent.com/msn0/teti/master/screencast-teti4.gif){: .center-image }
+
+<br/>
+
 > CLI for testing DOM timings built upon [Headless Chrome](https://developers.google.com/web/updates/2017/04/headless-chrome) & [Lighthouse](https://github.com/GoogleChrome/lighthouse) 💜
 
 [![Build Status](https://travis-ci.org/msn0/teti.svg?branch=master)](http://travis-ci.org/msn0/teti)
