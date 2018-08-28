@@ -39,8 +39,7 @@ const spinner = ora('Starting performance tests').start();
 
 process.on('SIGINT', () => {
     getHeadlessChromePid().then(p => {
-        fkill(p.pid);
-        process.exit();
+        fkill(p.pid).then(() => process.exit());
     });
 });
 
