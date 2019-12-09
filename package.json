@@ -23,22 +23,22 @@
   },
   "homepage": "https://github.com/msn0/teti#readme",
   "dependencies": {
-    "@elstats/mean": "^2.0.0",
-    "@elstats/percentile": "^3.3.0",
-    "chalk": "^2.4.1",
-    "chrome-remote-interface": "^0.26.1",
-    "fkill": "^5.3.0",
+    "@elstats/mean": "2.0.0",
+    "@elstats/percentile": "3.3.0",
+    "chalk": "2.4.2",
+    "chrome-remote-interface": "0.28.0",
+    "fkill": "5.3.0",
     "lighthouse": "2.0.0",
-    "meow": "^5.0.0",
-    "ora": "^3.0.0",
-    "ps-list": "^5.0.0",
-    "stats-mad": "^1.0.0",
-    "stats-median": "^1.0.0",
-    "stats-variance": "^1.0.0",
-    "text-table": "^0.2.0"
+    "meow": "5.0.0",
+    "ora": "3.4.0",
+    "ps-list": "5.0.1",
+    "stats-mad": "1.0.0",
+    "stats-median": "1.0.1",
+    "stats-variance": "1.0.0",
+    "text-table": "0.2.0"
   },
   "devDependencies": {
-    "ava": "^0.25.0",
-    "eslint-config-helmut": "^3.0.0"
+    "ava": "0.25.0",
+    "eslint-config-helmut": "3.0.0"
   }
 }
