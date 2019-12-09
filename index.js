@@ -11,12 +11,16 @@ function twoDigits(value) {
 
 function getTimings(measurements) {
     return (name) => measurements
-        .map(measurement =>
-            measurement
-                .filter(timing => timing.name === name)
-                .map(timing => timing.value)
-        )
-        .map(t => t[0])
+        .map(measurement => {
+            const found = measurement.find(timing => timing.name === name);
+
+            if (found) {
+                return found.value;
+            }
+
+            return null;
+        })
+        .filter(Boolean)
         .sort();
 }
 
