@@ -13,10 +13,11 @@ const cli = meow(`
     $ teti <url>
 
   Options
-    --number, -n    number of tests to run (10 is default)
-    --runner, -r    specify runner (chrome by default)
-    --custom, -c    additional metrics to gather (Navigation Timing API and User Timing API)
-    --verbose, -v   output all data
+    --number, -n     number of tests to run (10 is default)
+    --runner, -r     specify runner (chrome is default)
+    --custom, -c     additional metrics to gather (Navigation Timing API and User Timing API)
+    --output, -o     output format: table or csv, (table is default)
+    --verbose, -v    output all data
 
   Examples
     $ teti google.com -n 96
@@ -35,7 +36,12 @@ const cli = meow(`
         custom: {
             type: 'string',
             alias: 'c'
-        }
+        },
+        output: {
+            type: 'string',
+            alias: 'o',
+            default: 'table'
+        },
     }
 });
 
@@ -51,7 +57,7 @@ const runner = require(`./${cli.flags.runner}-runner`);
 const custom = Array.isArray(cli.flags.custom)
     ? cli.flags.custom
     : [cli.flags.custom];
-const { number, verbose } = cli.flags;
+const { number, verbose, output: outputFormat } = cli.flags;
 
 function verboseLog(message) {
     if (verbose) {
@@ -68,6 +74,10 @@ function notify(spinner) {
             verboseLog('\n' + JSON.stringify(timings));
         }
     };
+}
+
+function csv(rows) {
+    return rows.map(column => column.join(',')).join('\n');
 }
 
 (async () => {
@@ -100,10 +110,14 @@ function notify(spinner) {
         chalk.yellow(o.metrics.mad)
     ]);
 
-    const t = table([headings, ...rows], {
-        align: Array.from(headings, () => 'r')
-    });
+    if (outputFormat === 'table') {
+        const t = table([headings, ...rows], {
+            align: Array.from(headings, () => 'r')
+        });
 
-    console.log(`\nResults for ${chalk.bgMagenta(url)} based on ${chalk.bgMagenta(number)} requests:\n`);
-    console.log(`${t}\n`);
+        console.log(`\nResults for ${chalk.bgMagenta(url)} based on ${chalk.bgMagenta(number)} requests:\n`);
+        console.log(`${t}\n`);
+    } else {
+        console.log(csv([headings, ...rows]));
+    }
 })();
