@@ -15,12 +15,31 @@ const cli = meow(`
     $ teti <url>
 
   Options
-    -n          number of tests to run (10 is default)
-    --verbose   output all data
+    --number, -n    number of tests to run (10 is default)
+    --runner, -r    specify runner (chrome by default)
+    --custom, -c    additional metrics to gather (Navigation Timing API and User Timing API)
+    --verbose, -v   output all data
 
   Examples
     $ teti google.com -n 96
-`);
+`, {
+    flags: {
+        number: {
+            type: 'number',
+            alias: 'n',
+            default: 10
+        },
+        runner: {
+            type: 'string',
+            alias: 'r',
+            default: 'chrome'
+        },
+        custom: {
+            type: 'string',
+            alias: 'c'
+        }
+    }
+});
 
 if (!cli.input[0]) {
     cli.showHelp();
