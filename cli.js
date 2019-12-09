@@ -7,8 +7,6 @@ const teti = require('./');
 const ora = require('ora');
 const chalk = require('chalk');
 const table = require('text-table');
-const fkill = require('fkill');
-const psList = require('ps-list');
 
 const cli = meow(`
   Usage
@@ -56,12 +54,6 @@ const custom = cli.flags.custom || [];
 
 const spinner = ora('Starting performance tests').start();
 
-process.on('SIGINT', () => {
-    getHeadlessChromePid().then(p => {
-        fkill(p.pid).then(() => process.exit());
-    });
-});
-
 function verboseLog(message) {
     if (verbose) {
         console.log(message);
@@ -75,14 +67,6 @@ function notify({ current, timings }) {
     if (timings) {
         verboseLog('\n' + JSON.stringify(timings));
     }
-}
-
-function getHeadlessChromePid() {
-    return psList().then(data => {
-        return data
-            .filter(p => ['Google Chrome', 'Google Chrome Canary'].includes(p.name))
-            .find(p => p.cmd.indexOf('--headless') !== -1 && p.cmd.indexOf('--remote-debugging-port=9222') !== -1);
-    });
 }
 
 teti({ url, num, notify, runner, custom }).then(output => {
