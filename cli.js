@@ -44,15 +44,14 @@ if (!cli.input[0]) {
     process.exit(1);
 }
 
-const num = cli.flags.n || 10;
 const url = cli.input[0].startsWith('http')
     ? cli.input[0]
     : 'http://' + cli.input[0];
-const verbose = cli.flags.verbose;
-const runner = cli.flags.runner && require(`./${cli.flags.runner}-runner`);
-const custom = cli.flags.custom || [];
-
-const spinner = ora('Starting performance tests').start();
+const runner = require(`./${cli.flags.runner}-runner`);
+const custom = Array.isArray(cli.flags.custom)
+    ? cli.flags.custom
+    : [cli.flags.custom];
+const { number, verbose } = cli.flags;
 
 function verboseLog(message) {
     if (verbose) {
@@ -60,16 +59,28 @@ function verboseLog(message) {
     }
 }
 
-function notify({ current, timings }) {
-    if (current) {
-        spinner.text = `Collecting DOM timings ${current}/${num} `;
-    }
-    if (timings) {
-        verboseLog('\n' + JSON.stringify(timings));
-    }
+function notify(spinner) {
+    return ({ current, timings }) => {
+        if (current) {
+            spinner.text = `Collecting DOM timings ${current}/${number} `;
+        }
+        if (timings) {
+            verboseLog('\n' + JSON.stringify(timings));
+        }
+    };
 }
 
-teti({ url, num, notify, runner, custom }).then(output => {
+(async () => {
+    const spinner = ora('Starting performance tests').start();
+
+    const output = await teti({
+        url,
+        number,
+        notify: notify(spinner),
+        runner,
+        custom
+    });
+
     spinner.stop();
 
     const headings = [
@@ -80,18 +91,19 @@ teti({ url, num, notify, runner, custom }).then(output => {
         'σ²',
         'MAD'
     ].map(h => chalk.cyan(h));
+    const rows = output.map(o => [
+        chalk.blue(o.name),
+        chalk.yellow(o.metrics.median),
+        chalk.yellow(o.metrics.mean),
+        chalk.yellow(o.metrics.p95),
+        chalk.yellow(o.metrics.variance),
+        chalk.yellow(o.metrics.mad)
+    ]);
 
-    const t = table([headings].concat(output.map(o => {
-        return [
-            chalk.blue(o.name),
-            chalk.yellow(o.metrics.median),
-            chalk.yellow(o.metrics.mean),
-            chalk.yellow(o.metrics.p95),
-            chalk.yellow(o.metrics.variance),
-            chalk.yellow(o.metrics.mad)
-        ];
-    })), { align: [ 'r', 'r', 'r', 'r', 'r', 'r' ] });
+    const t = table([headings, ...rows], {
+        align: Array.from(headings, () => 'r')
+    });
 
-    console.log(`\nResults for ${chalk.bgMagenta(url)} based on ${chalk.bgMagenta(num)} requests:\n`);
+    console.log(`\nResults for ${chalk.bgMagenta(url)} based on ${chalk.bgMagenta(number)} requests:\n`);
     console.log(`${t}\n`);
-});
+})();

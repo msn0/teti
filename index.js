@@ -10,14 +10,14 @@ function twoDigits(value) {
 }
 
 function getTimings(measurements) {
-    return function(name) {
-        return measurements
-            .map(measurement => {
-                return measurement
-                    .filter(timing => timing.name === name)
-                    .map(timing => timing.value);
-            }).map(t => t[0]).sort();
-    };
+    return (name) => measurements
+        .map(measurement =>
+            measurement
+                .filter(timing => timing.name === name)
+                .map(timing => timing.value)
+        )
+        .map(t => t[0])
+        .sort();
 }
 
 function p95(data) {
@@ -50,11 +50,11 @@ function toTiming({ name, startTime }) {
     };
 }
 
-async function start({ url, num, notify, custom, runner = require('./chrome-runner') }) {
+async function start({ url, number, notify, custom, runner }) {
 
     const data = [];
 
-    for (let current = 1; current <= num; current++) {
+    for (let current = 1; current <= number; current++) {
         notify({ current });
 
         const { timing, paint, mark } = await runner(url);
@@ -64,11 +64,11 @@ async function start({ url, num, notify, custom, runner = require('./chrome-runn
                 name,
                 value: timing[name] - timing.connectStart
             }))
-            .concat(paint.map(toTiming))
-            .concat(mark.map(toTiming))
+            .concat(paint.map(toTiming), mark.map(toTiming))
             .filter(t => t.value > 0);
 
         data.push(timings);
+
         notify({ timings });
     }
 

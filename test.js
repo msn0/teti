@@ -10,7 +10,7 @@ test('should report DOM timings', async t => {
     const fooBar = getFooBar();
 
     const timings = await teti({
-        num: 5,
+        number: 5,
         url: '',
         custom: ['foo bar'],
         notify: () => {},
