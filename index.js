@@ -54,14 +54,14 @@ function toTiming({ name, startTime }) {
     };
 }
 
-async function start({ url, number, notify, custom, runner }) {
+async function start({ url, number, notify, custom, runner, insecure }) {
 
     const data = [];
 
     for (let current = 1; current <= number; current++) {
         notify({ current });
 
-        const { timing, paint, mark } = await runner(url);
+        const { timing, paint, mark } = await runner(url, insecure);
 
         const timings = Object.keys(timing)
             .map(name => ({

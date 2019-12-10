@@ -8,8 +8,8 @@ function getMetrics() {
     };
 }
 
-module.exports = async function launch(url) {
-    const browser = await puppeteer.launch();
+module.exports = async function launch(url, ignoreHTTPSErrors) {
+    const browser = await puppeteer.launch({ ignoreHTTPSErrors });
     const page = await browser.newPage();
     await page.goto(url, { waitUntil: 'networkidle2' });
 
