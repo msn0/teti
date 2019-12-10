@@ -17,6 +17,7 @@ const cli = meow(`
     --runner, -r     specify runner (chrome is default)
     --custom, -c     additional metrics to gather (Navigation Timing API and User Timing API)
     --output, -o     output format: table or csv, (table is default)
+    --insecure, -i   allow to open insecure pages, like localhost over HTTPS with self-signed certificate
     --verbose, -v    output all data
 
   Examples
@@ -42,6 +43,11 @@ const cli = meow(`
             alias: 'o',
             default: 'table'
         },
+        insecure: {
+            type: 'boolean',
+            alias: 'i',
+            default: false
+        }
     }
 });
 
@@ -57,7 +63,7 @@ const runner = require(`./${cli.flags.runner}-runner`);
 const custom = Array.isArray(cli.flags.custom)
     ? cli.flags.custom
     : [cli.flags.custom];
-const { number, verbose, output: outputFormat } = cli.flags;
+const { number, verbose, output: outputFormat, insecure } = cli.flags;
 
 function verboseLog(message) {
     if (verbose) {
@@ -88,7 +94,8 @@ function csv(rows) {
         number,
         notify: notify(spinner),
         runner,
-        custom
+        custom,
+        insecure
     });
 
     spinner.stop();
