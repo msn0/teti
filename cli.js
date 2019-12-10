@@ -3,10 +3,11 @@
 'use strict';
 
 const meow = require('meow');
-const teti = require('./');
 const ora = require('ora');
 const chalk = require('chalk');
-const table = require('text-table');
+
+const printOutput = require('./print-output');
+const teti = require('./');
 
 const cli = meow(`
   Usage
@@ -41,7 +42,7 @@ const cli = meow(`
         output: {
             type: 'string',
             alias: 'o',
-            default: 'table'
+            default: 'pretty'
         },
         insecure: {
             type: 'boolean',
@@ -92,10 +93,6 @@ function notify(spinner) {
     };
 }
 
-function csv(rows) {
-    return rows.map(column => column.join(',')).join('\n');
-}
-
 (async () => {
     const spinner = ora('Starting performance tests').start();
 
@@ -117,24 +114,39 @@ function csv(rows) {
         'p95',
         'σ²',
         'MAD'
-    ].map(h => chalk.cyan(h));
-    const rows = output.map(o => [
-        chalk.blue(o.name),
-        chalk.yellow(o.metrics.median),
-        chalk.yellow(o.metrics.mean),
-        chalk.yellow(o.metrics.p95),
-        chalk.yellow(o.metrics.variance),
-        chalk.yellow(o.metrics.mad)
+    ];
+    const rows = output.map(({ name, metrics }) => [
+        name,
+        metrics.median,
+        metrics.mean,
+        metrics.p95,
+        metrics.variance,
+        metrics.mad
     ]);
 
-    if (outputFormat === 'table') {
-        const t = table([headings, ...rows], {
-            align: Array.from(headings, () => 'r')
-        });
-
-        console.log(`\nResults for ${chalk.bgMagenta(url)} based on ${chalk.bgMagenta(number)} requests:\n`);
-        console.log(`${t}\n`);
-    } else {
-        console.log(csv([headings, ...rows]));
+    switch (outputFormat) {
+        case 'pretty': {
+            printOutput.prettyTable(
+                `Results for ${chalk.bgMagenta(url)} based on ${chalk.bgMagenta(number)} requests:`,
+                headings,
+                rows
+            );
+            break;
+        }
+        case 'table': {
+            printOutput.nativeTable(headings, rows);
+            break;
+        }
+        case 'csv': {
+            printOutput.csv(headings, rows);
+            break;
+        }
+        default: {
+            printOutput.prettyTable(
+                `Unsupported output format ${outputFormat}`,
+                headings,
+                rows
+            );
+        }
     }
 })();
