@@ -56,13 +56,23 @@ if (!cli.input[0]) {
     process.exit(1);
 }
 
+function parseCustom(value) {
+    if (!value) {
+        return [];
+    }
+
+    if (Array.isArray(value)) {
+        return value;
+    }
+
+    return [value];
+}
+
 const url = cli.input[0].startsWith('http')
     ? cli.input[0]
     : 'http://' + cli.input[0];
 const runner = require(`./${cli.flags.runner}-runner`);
-const custom = Array.isArray(cli.flags.custom)
-    ? cli.flags.custom
-    : [cli.flags.custom];
+const custom = parseCustom(cli.flags.custom);
 const { number, verbose, output: outputFormat, insecure } = cli.flags;
 
 function verboseLog(message) {
