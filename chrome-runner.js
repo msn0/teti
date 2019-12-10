@@ -10,7 +10,7 @@ function getMetrics() {
 
 module.exports = async function launch(url, ignoreHTTPSErrors) {
     const browser = await puppeteer.launch({ ignoreHTTPSErrors });
-    const page = await browser.newPage();
+    const [page] = await browser.pages();
     await page.goto(url, { waitUntil: 'networkidle2' });
 
     const results = await page.evaluate(getMetrics);
