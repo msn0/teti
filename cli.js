@@ -57,7 +57,7 @@ if (!cli.input[0]) {
     process.exit(1);
 }
 
-function parseCustom(value) {
+function toArray(value) {
     if (!value) {
         return [];
     }
@@ -73,7 +73,7 @@ const url = cli.input[0].startsWith('http')
     ? cli.input[0]
     : 'http://' + cli.input[0];
 const runner = require(`./${cli.flags.runner}-runner`);
-const custom = parseCustom(cli.flags.custom);
+const custom = toArray(cli.flags.custom);
 const { number, verbose, output: outputFormat, insecure } = cli.flags;
 
 function verboseLog(message) {
