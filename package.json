@@ -25,6 +25,7 @@
   "dependencies": {
     "@elstats/mean": "2.0.0",
     "@elstats/percentile": "3.3.0",
+    "@financial-times/polyfill-useragent-normaliser": "1.5.0",
     "chalk": "3.0.0",
     "meow": "6.0.0",
     "ora": "4.0.3",

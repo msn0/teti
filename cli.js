@@ -5,21 +5,31 @@
 const meow = require('meow');
 const ora = require('ora');
 const chalk = require('chalk');
+const UA = require('@financial-times/polyfill-useragent-normaliser');
 
 const printOutput = require('./print-output');
 const teti = require('./');
+
+const networkPresets = require('./network-presets');
+const devicePresets = require('./device-presets');
+
+function listPresets(presets) {
+    return Object.keys(presets).join(', ');
+}
 
 const cli = meow(`
   Usage
     $ teti <url>
 
   Options
-    --number, -n     number of tests to run (10 is default)
-    --runner, -r     specify runner (chrome is default)
-    --custom, -c     additional metrics to gather (Navigation Timing API and User Timing API)
-    --output, -o     output format: table or csv, (table is default)
-    --insecure, -i   allow to open insecure pages, like localhost over HTTPS with self-signed certificate
-    --verbose, -v    output all data
+    --number,   -n    number of tests to run (10 is default)
+    --runner,   -r    specify runner; available options: chrome (default)
+    --custom,   -c    additional metrics to gather (Navigation Timing API and User Timing API)
+    --output,   -o    output format; available options: pretty (default), table, csv
+    --insecure, -i    allow to open insecure pages, like localhost over HTTPS with self-signed certificate
+    --device,   -d    allow to emulate a device; available options: ${listPresets(devicePresets)}
+    --network,  -k    allow to emulate network conditions; available options: ${listPresets(networkPresets)}
+    --verbose,  -v    output all data
 
   Examples
     $ teti google.com -n 96
@@ -48,6 +58,14 @@ const cli = meow(`
             type: 'boolean',
             alias: 'i',
             default: false
+        },
+        device: {
+            type: 'string',
+            alias: 'd'
+        },
+        network: {
+            type: 'string',
+            alias: 'k'
         }
     }
 });
@@ -74,7 +92,7 @@ const url = cli.input[0].startsWith('http')
     : 'http://' + cli.input[0];
 const runner = require(`./${cli.flags.runner}-runner`);
 const custom = toArray(cli.flags.custom);
-const { number, verbose, output: outputFormat, insecure } = cli.flags;
+const { number, verbose, output: outputFormat, insecure, network, device } = cli.flags;
 
 function verboseLog(message) {
     if (verbose) {
@@ -93,60 +111,94 @@ function notify(spinner) {
     };
 }
 
+function printDeviceSettings(settings) {
+    if (!settings) {
+        return '';
+    }
+
+    const ua = new UA(settings.ua);
+    const friendlyUa = `${ua.getFamily()} ${ua.getVersion()}`;
+
+    return `\nDevice: ${chalk.bgMagenta(device)} ` +
+        `(Viewport size: ${settings.width}x${settings.height}, DPR: ${settings.dpr})\n` +
+        `User-Agent: ${chalk.bgMagenta(friendlyUa)} (${settings.ua})`;
+}
+
+function printNetworkSettings(settings) {
+    if (!settings) {
+        return '';
+    }
+
+    return `\nNetwork: ${chalk.bgMagenta(network)} ` +
+        `(Up: ${Math.round(settings.upload)} kbps, Down: ${Math.round(settings.download)} kbps, ` +
+        `Latency: ${settings.latency} ms)`;
+}
+
 (async () => {
     const spinner = ora('Starting performance tests').start();
 
-    const output = await teti({
-        url,
-        number,
-        notify: notify(spinner),
-        runner,
-        custom,
-        insecure
-    });
+    try {
+        const { results, deviceSettings, networkSettings } = await teti({
+            url,
+            number,
+            notify: notify(spinner),
+            runner,
+            custom,
+            insecure,
+            device,
+            network,
+            devicePresets,
+            networkPresets
+        });
 
-    spinner.stop();
+        const headings = [
+            'Timing',
+            'median',
+            'mean',
+            'p95',
+            'σ²',
+            'MAD'
+        ];
+        const rows = results.map(({ name, metrics }) => [
+            name,
+            metrics.median,
+            metrics.mean,
+            metrics.p95,
+            metrics.variance,
+            metrics.mad
+        ]);
 
-    const headings = [
-        'Timing',
-        'median',
-        'mean',
-        'p95',
-        'σ²',
-        'MAD'
-    ];
-    const rows = output.map(({ name, metrics }) => [
-        name,
-        metrics.median,
-        metrics.mean,
-        metrics.p95,
-        metrics.variance,
-        metrics.mad
-    ]);
-
-    switch (outputFormat) {
-        case 'pretty': {
-            printOutput.prettyTable(
-                `Results for ${chalk.bgMagenta(url)} based on ${chalk.bgMagenta(number)} requests:`,
-                headings,
-                rows
-            );
-            break;
+        switch (outputFormat) {
+            case 'pretty': {
+                spinner.succeed();
+                printOutput.prettyTable(
+                    `Results for ${chalk.bgMagenta(url)} based on ${chalk.bgMagenta(number)} requests` +
+                    printNetworkSettings(networkSettings) + printDeviceSettings(deviceSettings) + '\n',
+                    headings,
+                    rows
+                );
+                break;
+            }
+            case 'table': {
+                spinner.succeed();
+                printOutput.nativeTable(headings, rows);
+                break;
+            }
+            case 'csv': {
+                spinner.stop();
+                printOutput.csv(headings, rows);
+                break;
+            }
+            default: {
+                spinner.stop();
+                printOutput.prettyTable(
+                    `Unsupported output format ${outputFormat}`,
+                    headings,
+                    rows
+                );
+            }
         }
-        case 'table': {
-            printOutput.nativeTable(headings, rows);
-            break;
-        }
-        case 'csv': {
-            printOutput.csv(headings, rows);
-            break;
-        }
-        default: {
-            printOutput.prettyTable(
-                `Unsupported output format ${outputFormat}`,
-                headings,
-                rows
-            );
-        }
+    } catch (err) {
+        spinner.fail(err.message);
     }
 })();
