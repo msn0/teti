@@ -9,7 +9,7 @@ test('should report DOM timings', async t => {
     const firstPaint = getFirstPaint();
     const fooBar = getFooBar();
 
-    const timings = await teti({
+    const { results } = await teti({
         number: 5,
         url: '',
         custom: ['foo bar'],
@@ -35,7 +35,7 @@ test('should report DOM timings', async t => {
     });
 
     t.deepEqual(
-        timings,
+        results,
         [{
             name: 'domLoading',
             metrics: {

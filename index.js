@@ -54,14 +54,45 @@ function toTiming({ name, startTime }) {
     };
 }
 
-async function start({ url, number, notify, custom, runner, insecure }) {
+function getPreset(error, presets, presetName) {
+    if (!presetName) {
+        return null;
+    }
+
+    if (!presets[presetName]) {
+        throw new Error(`Unknown ${error} ${presetName}`);
+    }
+
+    return presets[presetName];
+}
+
+async function start({
+    url,
+    number,
+    notify,
+    custom,
+    runner,
+    insecure,
+    device,
+    network,
+    devicePresets,
+    networkPresets
+}) {
 
     const data = [];
+
+    const deviceSettings = getPreset('device name', devicePresets, device);
+    const networkSettings = getPreset('network preset', networkPresets, network);
 
     for (let current = 1; current <= number; current++) {
         notify({ current });
 
-        const { timing, paint, mark } = await runner(url, insecure);
+        const { timing, paint, mark } = await runner({
+            url,
+            insecure,
+            deviceSettings,
+            networkSettings
+        });
 
         const timings = Object.keys(timing)
             .map(name => ({
@@ -76,7 +107,9 @@ async function start({ url, number, notify, custom, runner, insecure }) {
         notify({ timings });
     }
 
-    return analyze(data, custom);
+    const results = analyze(data, custom);
+
+    return { results, deviceSettings, networkSettings };
 }
 
 module.exports = params => start(params);
